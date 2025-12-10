@@ -1,0 +1,190 @@
+'use client';
+
+import { useState } from "react";
+import Link from "next/link";
+import { Search, Menu, Bell, Settings } from "lucide-react";
+import Footer from "../components/Footer";
+
+const HomePage = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Placeholder game data
+  const games = [
+    { id: 1, title: "Adventure Quest", rating: "86% Rating" },
+    { id: 2, title: "Battle Arena", rating: "91% Rating" },
+    { id: 3, title: "City Builder", rating: "85% Rating" },
+    { id: 4, title: "Racing Legends", rating: "59% Rating" },
+    { id: 5, title: "Space Explorer", rating: "91% Rating" },
+    { id: 6, title: "Fantasy World", rating: "83% Rating" },
+    { id: 7, title: "Zombie Survival", rating: "55% Rating" },
+    { id: 8, title: "Parkour Master", rating: "56% Rating" },
+  ];
+
+  return (
+    <div className="min-h-screen bg-white">
+      {/* Top Navigation Bar */}
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div className="flex items-center justify-between px-4 py-3">
+          {/* Left Section - Menu & Logo */}
+          <div className="flex items-center gap-4">
+            <button className="p-2 hover:bg-gray-100 rounded-lg">
+              <Menu className="w-6 h-6 text-gray-700" />
+            </button>
+            
+            <Link href="/home" className="flex items-center">
+              <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-xl">◈</span>
+              </div>
+            </Link>
+          </div>
+
+          {/* Center Section - Navigation Links */}
+          <nav className="hidden md:flex items-center gap-6">
+            <Link href="#" className="text-gray-700 hover:text-gray-900 font-semibold text-sm">
+              Charts
+            </Link>
+            <Link href="#" className="text-gray-700 hover:text-gray-900 font-semibold text-sm">
+              Marketplace
+            </Link>
+            <Link href="#" className="text-gray-700 hover:text-gray-900 font-semibold text-sm">
+              Create
+            </Link>
+            <Link href="#" className="text-gray-700 hover:text-gray-900 font-semibold text-sm">
+              Robux
+            </Link>
+          </nav>
+
+          {/* Right Section - Search & User */}
+          <div className="flex items-center gap-3">
+            <div className="hidden md:flex items-center gap-2 bg-gray-100 rounded-lg px-4 py-2 w-64">
+              <Search className="w-4 h-4 text-gray-500" />
+              <input
+                type="text"
+                placeholder="Search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="bg-transparent text-gray-700 placeholder:text-gray-500 text-sm focus:outline-none w-full"
+              />
+            </div>
+            
+            <button className="p-2 hover:bg-gray-100 rounded-lg relative">
+              <Bell className="w-5 h-5 text-gray-700" />
+              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+            </button>
+            
+            <button className="p-2 hover:bg-gray-100 rounded-lg">
+              <Settings className="w-5 h-5 text-gray-700" />
+            </button>
+            
+            <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 py-8">
+        {/* Recommended For You Section */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Recommended For You</h2>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {games.map((game) => (
+              <div key={game.id} className="bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
+                {/* Game Thumbnail Placeholder */}
+                <div className="aspect-video bg-gray-200 flex items-center justify-center relative group">
+                  <div className="text-gray-400 text-sm">Game Thumbnail</div>
+                  
+                  {/* Play Button Overlay */}
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2 rounded">
+                      PLAY
+                    </button>
+                  </div>
+                </div>
+                
+                {/* Game Info */}
+                <div className="p-3">
+                  <h3 className="font-semibold text-gray-900 text-sm mb-1 truncate">
+                    {game.title}
+                  </h3>
+                  <div className="flex items-center gap-1 text-xs text-gray-600">
+                    <span className="text-green-600">👍</span>
+                    <span>{game.rating}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Continue Playing Section */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Continue Playing</h2>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {games.slice(0, 4).map((game) => (
+              <div key={`continue-${game.id}`} className="bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
+                <div className="aspect-video bg-gray-200 flex items-center justify-center relative group">
+                  <div className="text-gray-400 text-sm">Game Thumbnail</div>
+                  
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2 rounded">
+                      PLAY
+                    </button>
+                  </div>
+                </div>
+                
+                <div className="p-3">
+                  <h3 className="font-semibold text-gray-900 text-sm mb-1 truncate">
+                    {game.title}
+                  </h3>
+                  <div className="flex items-center gap-1 text-xs text-gray-600">
+                    <span className="text-green-600">👍</span>
+                    <span>{game.rating}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Popular Section */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Popular</h2>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {games.slice(0, 8).map((game) => (
+              <div key={`popular-${game.id}`} className="bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
+                <div className="aspect-video bg-gray-200 flex items-center justify-center relative group">
+                  <div className="text-gray-400 text-sm">Game Thumbnail</div>
+                  
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2 rounded">
+                      PLAY
+                    </button>
+                  </div>
+                </div>
+                
+                <div className="p-3">
+                  <h3 className="font-semibold text-gray-900 text-sm mb-1 truncate">
+                    {game.title}
+                  </h3>
+                  <div className="flex items-center gap-1 text-xs text-gray-600">
+                    <span className="text-green-600">👍</span>
+                    <span>{game.rating}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      </main>
+
+      {/* Footer */}
+      <Footer />
+    </div>
+  );
+};
+
+export default HomePage;
+

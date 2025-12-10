@@ -1,0 +1,204 @@
+'use client';
+
+import { useState } from "react";
+import Link from "next/link";
+import { Search } from "lucide-react";
+import Footer from "../components/Footer";
+
+const LoginPage = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [showEmailCodeModal, setShowEmailCodeModal] = useState(false);
+  const [email, setEmail] = useState("");
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Login attempt:", { username, password });
+  };
+
+  const handleSendCode = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Send code to:", email);
+    setShowEmailCodeModal(false);
+  };
+
+  return (
+    <div
+      className="min-h-screen bg-background bg-cover bg-center bg-no-repeat relative"
+      style={{ backgroundImage: `url(/gaming-bg.jpg)` }}
+    >
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-background/40" />
+
+      {/* Content */}
+      <div className="relative z-10 min-h-screen flex flex-col">
+        {/* Header with dark semi-transparent background */}
+        <header className="bg-background/70 backdrop-blur-sm flex items-center justify-between px-6 py-3">
+          {/* Logo */}
+          <Link href="/signup" className="flex items-center gap-4">
+            <div className="w-8 h-8 bg-foreground/10 rounded flex items-center justify-center border border-border/30">
+              <span className="text-foreground font-bold text-lg">◈</span>
+            </div>
+          </Link>
+
+          {/* Navigation */}
+          <nav className="hidden md:flex items-center gap-8">
+            <a href="#" className="text-foreground font-semibold hover:text-foreground/80 transition-colors">
+              Charts
+            </a>
+            <a href="#" className="text-foreground font-semibold hover:text-foreground/80 transition-colors">
+              Marketplace
+            </a>
+            <a href="#" className="text-foreground font-semibold hover:text-foreground/80 transition-colors">
+              Create
+            </a>
+            <a href="#" className="text-foreground font-semibold hover:text-foreground/80 transition-colors">
+              AdventureBux
+            </a>
+          </nav>
+
+          {/* Search and Signup */}
+          <div className="flex items-center gap-4">
+            <div className="hidden md:flex items-center gap-2 border border-border/40 rounded-full px-4 py-1.5 bg-secondary/20">
+              <Search className="w-4 h-4 text-foreground/50" />
+              <input
+                type="text"
+                placeholder="Search"
+                className="bg-transparent text-foreground placeholder:text-foreground/50 text-sm focus:outline-none w-28"
+              />
+            </div>
+            <Link href="/signup">
+              <button className="bg-accent hover:bg-accent/90 text-accent-foreground font-bold px-5 py-1.5 h-9 rounded">
+                Sign Up
+              </button>
+            </Link>
+          </div>
+        </header>
+
+        {/* Main Content */}
+        <main className="flex-1 flex items-center justify-center px-4 py-8">
+          <div className="w-full max-w-md bg-card/95 backdrop-blur-md border border-border/50 rounded-lg p-8 shadow-2xl">
+            <h2 className="text-2xl font-bold text-center text-foreground mb-8">
+              Login to AdventureBlox
+            </h2>
+
+            <form onSubmit={handleLogin} className="space-y-4">
+              {/* Username/Email/Phone Input */}
+              <div>
+                <input
+                  type="text"
+                  placeholder="Username/Email/Phone"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="w-full bg-secondary/50 border border-border/50 text-foreground placeholder:text-muted-foreground h-12 px-4 rounded focus:outline-none focus:ring-1 focus:ring-ring"
+                />
+              </div>
+
+              {/* Password Input */}
+              <div>
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full bg-secondary/50 border border-border/50 text-foreground placeholder:text-muted-foreground h-12 px-4 rounded focus:outline-none focus:ring-1 focus:ring-ring"
+                />
+              </div>
+
+              {/* Login Button */}
+              <button
+                type="submit"
+                className="w-full bg-foreground text-background hover:bg-foreground/90 font-bold py-3 h-12 text-base rounded"
+              >
+                Log In
+              </button>
+            </form>
+
+            {/* Forgot Password */}
+            <div className="text-center mt-6">
+              <Link href="/login/forgot-password-or-username" className="text-foreground hover:underline text-sm font-medium">
+                Forgot Password or Username?
+              </Link>
+            </div>
+
+            {/* Alternative Login Options */}
+            <div className="space-y-3 mt-6">
+              <button 
+                type="button"
+                onClick={() => setShowEmailCodeModal(true)}
+                className="w-full bg-secondary/70 border border-border/50 text-foreground hover:bg-secondary/90 h-12 rounded"
+              >
+                Email Me a One-Time Code
+              </button>
+            </div>
+
+            {/* Sign Up Link */}
+            <div className="text-center mt-6">
+              <span className="text-muted-foreground text-sm">Don&apos;t have an account? </span>
+              <Link href="/signup" className="text-foreground hover:underline text-sm font-semibold">
+                Sign Up
+              </Link>
+            </div>
+          </div>
+        </main>
+
+        {/* Footer */}
+        <Footer />
+      </div>
+
+      {/* Email One-Time Code Modal */}
+      {showEmailCodeModal && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 px-4">
+          <div className="bg-card/95 backdrop-blur-md border border-border/50 rounded-lg p-6 w-full max-w-md relative">
+            <button
+              onClick={() => setShowEmailCodeModal(false)}
+              className="absolute top-4 right-4 text-foreground hover:text-foreground/70"
+            >
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            
+            <h2 className="text-xl font-bold text-center text-foreground mb-4">
+              Get One-Time Code
+            </h2>
+            
+            <p className="text-sm text-muted-foreground mb-6">
+              Enter the email verified on your account to receive a one-time code.
+            </p>
+            
+            <form onSubmit={handleSendCode} className="space-y-4">
+              <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full bg-secondary/50 border border-border/50 text-foreground placeholder:text-muted-foreground h-12 px-4 rounded focus:outline-none focus:ring-1 focus:ring-ring"
+                required
+              />
+              
+              <button
+                type="submit"
+                className="w-full bg-secondary/70 border border-border/50 text-foreground hover:bg-secondary/90 h-12 rounded font-medium"
+              >
+                Send Code
+              </button>
+            </form>
+            
+            <div className="text-center mt-4">
+              <button 
+                onClick={() => setShowEmailCodeModal(false)}
+                className="text-foreground hover:underline text-sm font-medium"
+              >
+                Use Another Device
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default LoginPage;
+
