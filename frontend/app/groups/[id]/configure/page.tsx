@@ -2,14 +2,16 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Upload, X } from "lucide-react";
+import { Upload, X, Menu, Search, Bell, Settings } from "lucide-react";
 import Footer from "../../../components/Footer";
 import Sidebar from "../../../components/Sidebar";
 import Header from "../../../components/Header";
+import { ThemeToggle } from "../../../components/ThemeToggle";
 
 const ConfigureGroupPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("Information");
   const [groupName, setGroupName] = useState("Spiked Clothing");
   const [groupDescription, setGroupDescription] = useState("A group of friends that play games together for fun.");
@@ -111,7 +113,7 @@ const ConfigureGroupPage = () => {
                 onClick={() => setSettingsOpen(!settingsOpen)}
                 className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
               >
-                <SettingsIcon className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                <Settings className="w-5 h-5 text-gray-700 dark:text-gray-300" />
               </button>
               
               {settingsOpen && (

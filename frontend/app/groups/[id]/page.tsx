@@ -317,7 +317,6 @@ const GroupDetailPage = () => {
                   {(currentGroup.rank === "Admin" || currentGroup.rank === "Owner") && (
                     <Link href={`/groups/${selectedGroup}/configure`}>
                       <button 
-                        onClick={() => setActiveSection && setActiveSection("Announcements")}
                         className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded transition-colors"
                       >
                         Create Announcement
