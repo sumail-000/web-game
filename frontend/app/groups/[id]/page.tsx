@@ -23,19 +23,22 @@ const GroupDetailPage = () => {
   const [announcementContent, setAnnouncementContent] = useState("");
   const [announcementImage, setAnnouncementImage] = useState<string | null>(null);
 
-  // Mock user's groups
+  // Mock user's groups with full details
   const userGroups = [
-    { id: 1, name: "[QA] Qant...", avatar: "https://robohash.org/qant?set=set3" },
-    { id: 2, name: "Bakiez", avatar: "https://robohash.org/bakiez?set=set3" },
-    { id: 3, name: "Fizze", avatar: "https://robohash.org/fizze?set=set3" },
-    { id: 4, name: "Ito's Cafe", avatar: "https://robohash.org/itocafe?set=set3" },
-    { id: 5, name: "Mango Cl...", avatar: "https://robohash.org/mango?set=set3" },
-    { id: 6, name: "Modern Cl...", avatar: "https://robohash.org/modern?set=set3" },
-    { id: 7, name: "Modern_...", avatar: "https://robohash.org/modernx?set=set3" },
-    { id: 8, name: "Spiked Cl...", avatar: "https://robohash.org/spiked?set=set3" },
-    { id: 9, name: "State of Fl...", avatar: "https://robohash.org/statefl?set=set3" },
-    { id: 10, name: "Sushi Mazi", avatar: "https://robohash.org/sushimazi?set=set3" },
+    { id: 1, name: "[QA] Qant...", fullName: "QA Quantum Gaming", avatar: "https://robohash.org/qant?set=set3", owner: "QuantumDev", members: 245, rank: "Member" },
+    { id: 2, name: "Bakiez", fullName: "Bakiez Studio", avatar: "https://robohash.org/bakiez?set=set3", owner: "BakieMaster", members: 1203, rank: "Admin" },
+    { id: 3, name: "Fizze", fullName: "Fizze Games", avatar: "https://robohash.org/fizze?set=set3", owner: "FizzeDev", members: 567, rank: "Moderator" },
+    { id: 4, name: "Ito's Cafe", fullName: "Ito's Cafe & Lounge", avatar: "https://robohash.org/itocafe?set=set3", owner: "ItoChef", members: 892, rank: "VIP Member" },
+    { id: 5, name: "Mango Cl...", fullName: "Mango Clothing Co.", avatar: "https://robohash.org/mango?set=set3", owner: "MangoDesigner", members: 3421, rank: "Member" },
+    { id: 6, name: "Modern Cl...", fullName: "Modern Clothing Studio", avatar: "https://robohash.org/modern?set=set3", owner: "ModernChris", members: 156, rank: "Owner" },
+    { id: 7, name: "Modern_...", fullName: "Modern Gaming Hub", avatar: "https://robohash.org/modernx?set=set3", owner: "ModernGamer", members: 678, rank: "Member" },
+    { id: 8, name: "Spiked Cl...", fullName: "Spiked Clothing", avatar: "https://robohash.org/spiked?set=set3", owner: "Modern_Chris", members: 142, rank: "Chairman" },
+    { id: 9, name: "State of Fl...", fullName: "State of Florida RP", avatar: "https://robohash.org/statefl?set=set3", owner: "FloridaGov", members: 5234, rank: "Citizen" },
+    { id: 10, name: "Sushi Mazi", fullName: "Sushi Mazi Restaurant", avatar: "https://robohash.org/sushimazi?set=set3", owner: "SushiChef", members: 423, rank: "Staff" },
   ];
+
+  // Get current group details
+  const currentGroup = userGroups.find(g => g.id === selectedGroup) || userGroups[7];
 
   // Mock wall posts
   const wallPosts = [
@@ -166,7 +169,7 @@ const GroupDetailPage = () => {
       {/* Main Layout */}
       <div className="flex max-w-[1000px] mx-auto mt-4 gap-4 px-4">
         {/* Sidebar - My Groups */}
-        <div className="w-[150px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg flex-shrink-0">
+        <div className="w-[150px] bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg flex-shrink-0">
           <div className="py-2">
             {userGroups.map((group) => (
               <button
@@ -190,34 +193,34 @@ const GroupDetailPage = () => {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 min-w-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
+        <div className="flex-1 min-w-0 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
           {/* Group Header */}
           <div className="flex items-start gap-4 p-4 border-b border-gray-200 dark:border-gray-700">
             <div className="w-[100px] h-[100px] border border-gray-200 dark:border-gray-700 rounded overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-700">
               <img
-                src="/spiked-logo.png"
-                alt="Nova Gaming Studios"
+                src={currentGroup.avatar}
+                alt={currentGroup.fullName}
                 className="w-full h-full object-cover"
               />
             </div>
 
             <div className="flex-1 min-w-0">
-              <h1 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Nova Gaming Studios</h1>
+              <h1 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{currentGroup.fullName}</h1>
               <p className="text-sm">
                 <span className="text-gray-600 dark:text-gray-400">By </span>
                 <a href="#" className="text-blue-600 dark:text-blue-400 hover:underline">
-                  NightOwl_Dev
+                  {currentGroup.owner}
                 </a>
               </p>
               
               <div className="flex gap-6 mt-3">
                 <div>
                   <p className="text-xs text-gray-600 dark:text-gray-400 uppercase">Members</p>
-                  <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">142</p>
+                  <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">{currentGroup.members}</p>
                 </div>
                 <div>
                   <p className="text-xs text-gray-600 dark:text-gray-400 uppercase">Rank</p>
-                  <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">Chairman</p>
+                  <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">{currentGroup.rank}</p>
                 </div>
               </div>
             </div>
@@ -271,7 +274,7 @@ const GroupDetailPage = () => {
           {activeTab === "About" && (
             <>
               {/* Create Announcement Section */}
-              <div className="p-4 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
+              <div className="p-4 bg-white dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
                 <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-3">Create Announcement</h2>
                 
                 <div className="flex gap-3">
