@@ -41,17 +41,17 @@ const SettingsPage = () => {
 
           {/* Center Section - Navigation Links */}
           <nav className="hidden md:flex items-center gap-6">
-            <Link href="#" className="text-gray-700 hover:text-gray-900 font-semibold text-sm">
-              Charts
+            <Link href="/games" className="text-gray-700 hover:text-gray-900 font-semibold text-sm">
+              Games
             </Link>
-            <Link href="#" className="text-gray-700 hover:text-gray-900 font-semibold text-sm">
-              Marketplace
+            <Link href="/catalog" className="text-gray-700 hover:text-gray-900 font-semibold text-sm">
+              Catalog
             </Link>
-            <Link href="#" className="text-gray-700 hover:text-gray-900 font-semibold text-sm">
+            <Link href="/create" className="text-gray-700 hover:text-gray-900 font-semibold text-sm">
               Create
             </Link>
-            <Link href="#" className="text-gray-700 hover:text-gray-900 font-semibold text-sm">
-              Robux
+            <Link href="/adventurebux" className="text-gray-700 hover:text-gray-900 font-semibold text-sm">
+              AdventureBux
             </Link>
           </nav>
 

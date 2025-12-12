@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Search, Menu, Bell, Settings as SettingsIcon, Home, User, MessageSquare, Users, ShoppingBag, Package, TrendingUp, Store, Gift, ChevronDown, X } from "lucide-react";
+import { Search, Menu, Bell, Settings as SettingsIcon, ChevronDown, X } from "lucide-react";
 import Footer from "../components/Footer";
 import { ThemeToggle } from "../components/ThemeToggle";
+import Sidebar from "../components/Sidebar";
 
 const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -46,17 +47,17 @@ const HomePage = () => {
 
           {/* Center Section - Navigation Links */}
           <nav className="hidden md:flex items-center gap-6">
-            <Link href="#" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-semibold text-sm">
-              Charts
+            <Link href="/games" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-semibold text-sm">
+              Games
             </Link>
-            <Link href="#" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-semibold text-sm">
-              Marketplace
+            <Link href="/catalog" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-semibold text-sm">
+              Catalog
             </Link>
-            <Link href="#" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-semibold text-sm">
+            <Link href="/create" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-semibold text-sm">
               Create
             </Link>
-            <Link href="#" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-semibold text-sm">
-              Robux
+            <Link href="/adventurebux" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-semibold text-sm">
+              AdventureBux
             </Link>
           </nav>
 
@@ -243,137 +244,7 @@ const HomePage = () => {
       <Footer />
 
       {/* Sidebar Overlay */}
-      {sidebarOpen && (
-        <>
-          {/* Backdrop */}
-          <div 
-            className="fixed inset-0 bg-black/50 z-40"
-            onClick={() => setSidebarOpen(false)}
-          ></div>
-          
-          {/* Sidebar Panel */}
-          <div className="fixed left-0 top-0 bottom-0 w-64 bg-white dark:bg-gray-900 z-50 shadow-xl overflow-y-auto">
-            {/* User Info Section */}
-            <div className="p-4 border-b border-gray-200 dark:border-gray-800">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-12 h-12 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
-                <div>
-                  <div className="font-bold text-gray-900 dark:text-gray-100">reahan00R</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Navigation Links */}
-            <nav className="py-2">
-              <Link 
-                href="/home" 
-                className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
-                onClick={() => setSidebarOpen(false)}
-              >
-                <Home className="w-5 h-5" />
-                <span className="font-medium">Home</span>
-              </Link>
-              
-              <Link 
-                href="/profile" 
-                className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
-                onClick={() => setSidebarOpen(false)}
-              >
-                <User className="w-5 h-5" />
-                <span className="font-medium">Profile</span>
-              </Link>
-              
-              <Link 
-                href="/messages" 
-                className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
-                onClick={() => setSidebarOpen(false)}
-              >
-                <MessageSquare className="w-5 h-5" />
-                <span className="font-medium">Messages</span>
-              </Link>
-              
-              <Link 
-                href="/connect" 
-                className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
-                onClick={() => setSidebarOpen(false)}
-              >
-                <Users className="w-5 h-5" />
-                <span className="font-medium">Connect</span>
-              </Link>
-              
-              <Link 
-                href="/avatar" 
-                className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
-                onClick={() => setSidebarOpen(false)}
-              >
-                <User className="w-5 h-5" />
-                <span className="font-medium">Avatar</span>
-              </Link>
-              
-              <Link 
-                href="/inventory" 
-                className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
-                onClick={() => setSidebarOpen(false)}
-              >
-                <Package className="w-5 h-5" />
-                <span className="font-medium">Inventory</span>
-              </Link>
-              
-              <Link 
-                href="/trade" 
-                className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
-                onClick={() => setSidebarOpen(false)}
-              >
-                <TrendingUp className="w-5 h-5" />
-                <span className="font-medium">Trade</span>
-              </Link>
-              
-              <Link 
-                href="/communities" 
-                className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
-                onClick={() => setSidebarOpen(false)}
-              >
-                <Users className="w-5 h-5" />
-                <span className="font-medium">Communities</span>
-              </Link>
-              
-              <Link 
-                href="/blog" 
-                className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
-                onClick={() => setSidebarOpen(false)}
-              >
-                <MessageSquare className="w-5 h-5" />
-                <span className="font-medium">Blog</span>
-              </Link>
-              
-              <Link 
-                href="/store" 
-                className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
-                onClick={() => setSidebarOpen(false)}
-              >
-                <Store className="w-5 h-5" />
-                <span className="font-medium">Official Store</span>
-              </Link>
-              
-              <Link 
-                href="/gift-cards" 
-                className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
-                onClick={() => setSidebarOpen(false)}
-              >
-                <Gift className="w-5 h-5" />
-                <span className="font-medium">Buy Gift Cards</span>
-              </Link>
-            </nav>
-
-            {/* Get Premium Button */}
-            <div className="p-4">
-              <button className="w-full bg-gray-900 dark:bg-gray-100 hover:bg-gray-800 dark:hover:bg-gray-200 text-white dark:text-gray-900 font-bold py-3 rounded-lg transition-colors">
-                Get Premium
-              </button>
-            </div>
-          </div>
-        </>
-      )}
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
     </div>
   );
 };

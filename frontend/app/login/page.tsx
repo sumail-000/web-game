@@ -43,16 +43,16 @@ const LoginPage = () => {
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            <a href="#" className="text-foreground font-semibold hover:text-foreground/80 transition-colors">
-              Charts
+            <a href="/games" className="text-foreground font-semibold hover:text-foreground/80 transition-colors">
+              Games
             </a>
-            <a href="#" className="text-foreground font-semibold hover:text-foreground/80 transition-colors">
-              Marketplace
+            <a href="/catalog" className="text-foreground font-semibold hover:text-foreground/80 transition-colors">
+              Catalog
             </a>
-            <a href="#" className="text-foreground font-semibold hover:text-foreground/80 transition-colors">
+            <a href="/create" className="text-foreground font-semibold hover:text-foreground/80 transition-colors">
               Create
             </a>
-            <a href="#" className="text-foreground font-semibold hover:text-foreground/80 transition-colors">
+            <a href="/adventurebux" className="text-foreground font-semibold hover:text-foreground/80 transition-colors">
               AdventureBux
             </a>
           </nav>
