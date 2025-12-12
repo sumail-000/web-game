@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import Footer from "../components/Footer";
-import { ThemeToggle } from "../components/ThemeToggle";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -29,57 +28,56 @@ const LoginPage = () => {
 
   return (
     <div
-      className="min-h-screen bg-background bg-cover bg-center bg-no-repeat relative"
+      className="min-h-screen bg-gray-900 bg-cover bg-center bg-no-repeat relative dark"
       style={{ backgroundImage: `url(/gaming-bg.jpg)` }}
     >
       {/* Dark overlay */}
-      <div className="absolute inset-0 bg-background/40" />
+      <div className="absolute inset-0 bg-black/40" />
 
       {/* Content */}
       <div className="relative z-10 min-h-screen flex flex-col">
         {/* Header with dark semi-transparent background */}
-        <header className="bg-background/70 backdrop-blur-sm flex items-center justify-between gap-4 px-6 py-2.5">
+        <header className="bg-gray-900/70 backdrop-blur-sm flex items-center justify-between gap-4 px-6 py-2.5">
           {/* Left Section - Logo and Navigation */}
           <div className="flex items-center gap-4 flex-1">
             {/* Logo */}
             <Link href="/signup" className="flex-shrink-0">
-              <div className="w-9 h-9 bg-foreground/10 rounded-lg flex items-center justify-center border border-border/30 hover:bg-foreground/20 transition-colors">
-                <span className="text-foreground font-bold text-lg">◈</span>
+              <div className="w-9 h-9 bg-white/10 rounded-lg flex items-center justify-center border border-gray-700 hover:bg-white/20 transition-colors">
+                <span className="text-white font-bold text-lg">◈</span>
               </div>
             </Link>
 
             {/* Navigation */}
             <nav className="hidden lg:flex items-center gap-1">
-              <a href="/games" className="text-foreground font-medium hover:text-foreground/80 transition-colors px-3 py-1.5 rounded hover:bg-foreground/10 text-sm">
+              <a href="/games" className="text-gray-200 font-medium hover:text-white transition-colors px-3 py-1.5 rounded hover:bg-white/10 text-sm">
                 Games
               </a>
-              <a href="/catalog" className="text-foreground font-medium hover:text-foreground/80 transition-colors px-3 py-1.5 rounded hover:bg-foreground/10 text-sm">
+              <a href="/catalog" className="text-gray-200 font-medium hover:text-white transition-colors px-3 py-1.5 rounded hover:bg-white/10 text-sm">
                 Catalog
               </a>
-              <a href="/create" className="text-foreground font-medium hover:text-foreground/80 transition-colors px-3 py-1.5 rounded hover:bg-foreground/10 text-sm">
+              <a href="/create" className="text-gray-200 font-medium hover:text-white transition-colors px-3 py-1.5 rounded hover:bg-white/10 text-sm">
                 Create
               </a>
-              <a href="/adventurebux" className="text-foreground font-medium hover:text-foreground/80 transition-colors px-3 py-1.5 rounded hover:bg-foreground/10 text-sm">
+              <a href="/adventurebux" className="text-gray-200 font-medium hover:text-white transition-colors px-3 py-1.5 rounded hover:bg-white/10 text-sm">
                 AdventureBux
               </a>
             </nav>
 
             {/* Search Bar */}
-            <div className="hidden md:flex items-center gap-2 border border-border/40 rounded-lg px-3 py-1.5 bg-secondary/20 w-64">
-              <Search className="w-4 h-4 text-foreground/50 flex-shrink-0" />
+            <div className="hidden md:flex items-center gap-2 border border-gray-600 rounded-lg px-3 py-1.5 bg-gray-800/50 w-64">
+              <Search className="w-4 h-4 text-gray-400 flex-shrink-0" />
               <input
                 type="text"
                 placeholder="Search"
-                className="bg-transparent text-foreground placeholder:text-foreground/50 text-sm focus:outline-none w-full"
+                className="bg-transparent text-white placeholder:text-gray-400 text-sm focus:outline-none w-full"
               />
             </div>
           </div>
 
-          {/* Right Section - Theme toggle and Signup */}
+          {/* Right Section - Signup */}
           <div className="flex items-center gap-2 flex-shrink-0">
-            <ThemeToggle />
             <Link href="/signup">
-              <button className="bg-accent hover:bg-accent/90 text-accent-foreground font-bold px-5 py-2 rounded transition-colors text-sm">
+              <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-2 rounded transition-colors text-sm">
                 Sign Up
               </button>
             </Link>
@@ -88,8 +86,8 @@ const LoginPage = () => {
 
         {/* Main Content */}
         <main className="flex-1 flex items-center justify-center px-4 py-8">
-          <div className="w-full max-w-md bg-card/95 backdrop-blur-md border border-border/50 rounded-lg p-8 shadow-2xl">
-            <h2 className="text-2xl font-bold text-center text-foreground mb-8">
+          <div className="w-full max-w-md bg-gray-800/95 backdrop-blur-md border border-gray-700 rounded-lg p-8 shadow-2xl">
+            <h2 className="text-2xl font-bold text-center text-white mb-8">
               Login to AdventureBlox
             </h2>
 
@@ -101,7 +99,7 @@ const LoginPage = () => {
                   placeholder="Username/Email/Phone"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full bg-secondary/50 border border-border/50 text-foreground placeholder:text-muted-foreground h-12 px-4 rounded focus:outline-none focus:ring-1 focus:ring-ring"
+                  className="w-full bg-gray-700/50 border border-gray-600 text-white placeholder:text-gray-400 h-12 px-4 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
 
@@ -112,14 +110,14 @@ const LoginPage = () => {
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-secondary/50 border border-border/50 text-foreground placeholder:text-muted-foreground h-12 px-4 rounded focus:outline-none focus:ring-1 focus:ring-ring"
+                  className="w-full bg-gray-700/50 border border-gray-600 text-white placeholder:text-gray-400 h-12 px-4 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
 
               {/* Login Button */}
               <button
                 type="submit"
-                className="w-full bg-foreground text-background hover:bg-foreground/90 font-bold py-3 h-12 text-base rounded"
+                className="w-full bg-white text-gray-900 hover:bg-gray-100 font-bold py-3 h-12 text-base rounded"
               >
                 Log In
               </button>
@@ -127,7 +125,7 @@ const LoginPage = () => {
 
             {/* Forgot Password */}
             <div className="text-center mt-6">
-              <Link href="/login/forgot-password-or-username" className="text-foreground hover:underline text-sm font-medium">
+              <Link href="/login/forgot-password-or-username" className="text-white hover:underline text-sm font-medium">
                 Forgot Password or Username?
               </Link>
             </div>
@@ -137,7 +135,7 @@ const LoginPage = () => {
               <button 
                 type="button"
                 onClick={() => setShowEmailCodeModal(true)}
-                className="w-full bg-secondary/70 border border-border/50 text-foreground hover:bg-secondary/90 h-12 rounded"
+                className="w-full bg-gray-700/70 border border-gray-600 text-white hover:bg-gray-700 h-12 rounded"
               >
                 Email Me a One-Time Code
               </button>
@@ -145,8 +143,8 @@ const LoginPage = () => {
 
             {/* Sign Up Link */}
             <div className="text-center mt-6">
-              <span className="text-muted-foreground text-sm">Don&apos;t have an account? </span>
-              <Link href="/signup" className="text-foreground hover:underline text-sm font-semibold">
+              <span className="text-gray-400 text-sm">Don&apos;t have an account? </span>
+              <Link href="/signup" className="text-white hover:underline text-sm font-semibold">
                 Sign Up
               </Link>
             </div>
@@ -160,21 +158,21 @@ const LoginPage = () => {
       {/* Email One-Time Code Modal */}
       {showEmailCodeModal && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 px-4">
-          <div className="bg-card/95 backdrop-blur-md border border-border/50 rounded-lg p-6 w-full max-w-md relative">
+          <div className="bg-gray-800/95 backdrop-blur-md border border-gray-700 rounded-lg p-6 w-full max-w-md relative">
             <button
               onClick={() => setShowEmailCodeModal(false)}
-              className="absolute top-4 right-4 text-foreground hover:text-foreground/70"
+              className="absolute top-4 right-4 text-white hover:text-gray-300"
             >
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
             
-            <h2 className="text-xl font-bold text-center text-foreground mb-4">
+            <h2 className="text-xl font-bold text-center text-white mb-4">
               Get One-Time Code
             </h2>
             
-            <p className="text-sm text-muted-foreground mb-6">
+            <p className="text-sm text-gray-400 mb-6">
               Enter the email verified on your account to receive a one-time code.
             </p>
             
@@ -184,13 +182,13 @@ const LoginPage = () => {
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-secondary/50 border border-border/50 text-foreground placeholder:text-muted-foreground h-12 px-4 rounded focus:outline-none focus:ring-1 focus:ring-ring"
+                className="w-full bg-gray-700/50 border border-gray-600 text-white placeholder:text-gray-400 h-12 px-4 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
                 required
               />
               
               <button
                 type="submit"
-                className="w-full bg-secondary/70 border border-border/50 text-foreground hover:bg-secondary/90 h-12 rounded font-medium"
+                className="w-full bg-gray-700/70 border border-gray-600 text-white hover:bg-gray-700 h-12 rounded font-medium"
               >
                 Send Code
               </button>
@@ -199,7 +197,7 @@ const LoginPage = () => {
             <div className="text-center mt-4">
               <button 
                 onClick={() => setShowEmailCodeModal(false)}
-                className="text-foreground hover:underline text-sm font-medium"
+                className="text-white hover:underline text-sm font-medium"
               >
                 Use Another Device
               </button>
