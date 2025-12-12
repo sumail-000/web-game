@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Search, Menu, Bell, Settings as SettingsIcon } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -12,47 +13,55 @@ interface HeaderProps {
 }
 
 export default function Header({ searchQuery, setSearchQuery, setSidebarOpen }: HeaderProps) {
+  const router = useRouter();
   const [settingsOpen, setSettingsOpen] = useState(false);
+
+  const handleLogout = () => {
+    // Clear any auth tokens/session data here
+    console.log("Logging out...");
+    router.push("/login");
+    setSettingsOpen(false);
+  };
 
   return (
     <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50">
-      <div className="flex items-center justify-between px-4 py-3">
-        {/* Left Section - Menu & Logo */}
-        <div className="flex items-center gap-4">
+      <div className="flex items-center justify-between gap-4 px-4 py-2.5">
+        {/* Left Section - Takes more space */}
+        <div className="flex items-center gap-4 flex-1">
+          {/* Menu Button */}
           <button 
             onClick={() => setSidebarOpen(true)}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+            className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg flex-shrink-0"
           >
-            <Menu className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+            <Menu className="w-5 h-5 text-gray-700 dark:text-gray-300" />
           </button>
           
-          <Link href="/home" className="flex items-center">
-            <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">◈</span>
+          {/* Logo */}
+          <Link href="/home" className="flex-shrink-0">
+            <div className="w-9 h-9 bg-gray-800 dark:bg-gray-700 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-lg">◈</span>
             </div>
           </Link>
-        </div>
 
-        {/* Center Section - Navigation Links */}
-        <nav className="hidden md:flex items-center gap-6">
-          <Link href="/games" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-semibold text-sm">
-            Games
-          </Link>
-          <Link href="/catalog" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-semibold text-sm">
-            Catalog
-          </Link>
-          <Link href="/create" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-semibold text-sm">
-            Create
-          </Link>
-          <Link href="/adventurebux" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-semibold text-sm">
-            AdventureBux
-          </Link>
-        </nav>
+          {/* Navigation Links */}
+          <nav className="hidden lg:flex items-center gap-1 flex-shrink-0">
+            <Link href="/games" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-medium text-sm px-3 py-1.5 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+              Games
+            </Link>
+            <Link href="/catalog" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-medium text-sm px-3 py-1.5 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+              Catalog
+            </Link>
+            <Link href="/create" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-medium text-sm px-3 py-1.5 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+              Create
+            </Link>
+            <Link href="/adventurebux" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-medium text-sm px-3 py-1.5 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+              AdventureBux
+            </Link>
+          </nav>
 
-        {/* Right Section - Search & User */}
-        <div className="flex items-center gap-3">
-          <div className="hidden md:flex items-center gap-2 bg-gray-100 dark:bg-gray-800 rounded-lg px-4 py-2 w-64">
-            <Search className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+          {/* Search Bar */}
+          <div className="hidden md:flex items-center gap-2 bg-gray-100 dark:bg-gray-800 rounded-lg px-3 py-1.5 w-64">
+            <Search className="w-4 h-4 text-gray-500 dark:text-gray-400 flex-shrink-0" />
             <input
               type="text"
               placeholder="Search"
@@ -61,24 +70,34 @@ export default function Header({ searchQuery, setSearchQuery, setSidebarOpen }: 
               className="bg-transparent text-gray-700 dark:text-gray-300 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-sm focus:outline-none w-full"
             />
           </div>
-          
+        </div>
+
+        {/* Right Section - Compact with even spacing */}
+        <div className="flex items-center gap-2 flex-shrink-0">
           {/* Theme Toggle */}
           <ThemeToggle />
           
-          {/* User Profile with Username */}
-          <Link href="/profile" className="flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg px-2 py-1">
-            <span className="text-gray-900 dark:text-gray-100 font-semibold text-sm hidden md:block">reahan00R</span>
-            <div className="w-8 h-8 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+          {/* User Profile */}
+          <Link href="/profile" className="flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg px-2 py-1.5 transition-colors">
+            <span className="text-gray-900 dark:text-gray-100 font-medium text-sm hidden lg:block">reahan00R</span>
+            <div className="w-8 h-8 bg-gray-300 dark:bg-gray-600 rounded-full flex-shrink-0 overflow-hidden">
+              <img 
+                src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-903254C5702EE154B5EA564D1D4CB860-Png/150/150/AvatarHeadshot/Webp/noFilter"
+                alt="reahan00R"
+                className="w-full h-full object-cover"
+              />
+            </div>
           </Link>
           
-          <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg relative">
+          {/* Notifications */}
+          <button className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg relative transition-colors">
             <Bell className="w-5 h-5 text-gray-700 dark:text-gray-300" />
             <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
           </button>
           
           {/* Currency Display */}
-          <div className="flex items-center gap-1 px-3 py-1.5 bg-gray-100 dark:bg-gray-800 rounded-lg">
-            <div className="w-5 h-5 bg-gray-800 dark:bg-gray-200 rounded-full flex items-center justify-center">
+          <div className="flex items-center gap-1.5 px-2.5 py-1.5 bg-gray-100 dark:bg-gray-800 rounded-lg">
+            <div className="w-5 h-5 bg-gray-800 dark:bg-gray-200 rounded-full flex items-center justify-center flex-shrink-0">
               <span className="text-white dark:text-gray-900 text-xs font-bold">◈</span>
             </div>
             <span className="text-gray-900 dark:text-gray-100 font-semibold text-sm">0</span>
@@ -88,41 +107,50 @@ export default function Header({ searchQuery, setSearchQuery, setSidebarOpen }: 
           <div className="relative">
             <button 
               onClick={() => setSettingsOpen(!settingsOpen)}
-              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+              className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
             >
               <SettingsIcon className="w-5 h-5 text-gray-700 dark:text-gray-300" />
             </button>
             
             {settingsOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
-                <Link 
-                  href="/settings" 
-                  className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              <>
+                {/* Backdrop to close dropdown */}
+                <div 
+                  className="fixed inset-0 z-40"
                   onClick={() => setSettingsOpen(false)}
-                >
-                  Settings
-                </Link>
-                <Link 
-                  href="/settings" 
-                  className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  onClick={() => setSettingsOpen(false)}
-                >
-                  Quick Sign In
-                </Link>
-                <Link 
-                  href="/settings" 
-                  className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  onClick={() => setSettingsOpen(false)}
-                >
-                  Help & Safety
-                </Link>
-                <button 
-                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  onClick={() => setSettingsOpen(false)}
-                >
-                  Logout
-                </button>
-              </div>
+                ></div>
+                
+                {/* Dropdown Menu */}
+                <div className="fixed top-16 right-1 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
+                  <Link 
+                    href="/settings" 
+                    className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    onClick={() => setSettingsOpen(false)}
+                  >
+                    Settings
+                  </Link>
+                  <Link 
+                    href="/settings" 
+                    className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    onClick={() => setSettingsOpen(false)}
+                  >
+                    Quick Sign In
+                  </Link>
+                  <Link 
+                    href="/settings" 
+                    className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    onClick={() => setSettingsOpen(false)}
+                  >
+                    Help & Safety
+                  </Link>
+                  <button 
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+                </div>
+              </>
             )}
           </div>
         </div>

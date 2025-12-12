@@ -24,7 +24,13 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         {/* User Info Section */}
         <div className="p-4 border-b border-gray-200 dark:border-gray-800">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-12 h-12 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+            <div className="w-12 h-12 bg-gray-300 dark:bg-gray-600 rounded-full overflow-hidden">
+              <img 
+                src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-903254C5702EE154B5EA564D1D4CB860-Png/150/150/AvatarHeadshot/Webp/noFilter"
+                alt="reahan00R"
+                className="w-full h-full object-cover"
+              />
+            </div>
             <div>
               <div className="font-bold text-gray-900 dark:text-gray-100">reahan00R</div>
             </div>
@@ -133,10 +139,10 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           </Link>
         </nav>
 
-        {/* Get Premium Button */}
+        {/* Get Membership Button */}
         <div className="p-4">
           <button className="w-full bg-gray-900 dark:bg-gray-100 hover:bg-gray-800 dark:hover:bg-gray-200 text-white dark:text-gray-900 font-bold py-3 rounded-lg transition-colors">
-            Get Premium
+            Get Membership
           </button>
         </div>
       </div>

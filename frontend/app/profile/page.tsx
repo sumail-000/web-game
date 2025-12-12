@@ -18,6 +18,9 @@ const ProfilePage = () => {
   const [editedBio, setEditedBio] = useState("");
   const [viewMode, setViewMode] = useState<"list" | "grid">("list");
   const menuRef = useRef<HTMLDivElement>(null);
+  const [showEditProfileModal, setShowEditProfileModal] = useState(false);
+  const [displayName, setDisplayName] = useState("sumail_00");
+  const [editedDisplayName, setEditedDisplayName] = useState("sumail_00");
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -94,12 +97,12 @@ const ProfilePage = () => {
 
   // Player Badges (original badges)
   const badges = [
-    { id: 1, name: "First Catch", type: "event", image: "" },
-    { id: 2, name: "Ruby Rank Compl...", type: "achievement", image: "" },
-    { id: 3, name: "750 Gems", type: "currency", image: "" },
-    { id: 4, name: "150 Gems", type: "currency", image: "" },
-    { id: 5, name: "30 Gems", type: "currency", image: "" },
-    { id: 6, name: "Welcome!", type: "welcome", image: "" },
+    { id: 1, name: "First Catch", type: "event", image: "https://tr.rbxcdn.com/180DAY-f5e67ede903b5b601dbfeeae8cf30ca4/150/150/Image/Webp/noFilter" },
+    { id: 2, name: "Ruby Rank Compl...", type: "achievement", image: "https://tr.rbxcdn.com/180DAY-f27876e227d1db9d246d938e7e2c1bfa/150/150/Image/Webp/noFilter" },
+    { id: 3, name: "750 Gems", type: "currency", image: "https://tr.rbxcdn.com/180DAY-b5f5ec7123eac51331066e41f32f0744/150/150/Image/Webp/noFilter" },
+    { id: 4, name: "150 Gems", type: "currency", image: "https://tr.rbxcdn.com/180DAY-4a009a65726fc790a5e98d8f97783d29/150/150/Image/Webp/noFilter" },
+    { id: 5, name: "30 Gems", type: "currency", image: "https://tr.rbxcdn.com/180DAY-76c505966c1b2a60d6a2f133309170a5/150/150/Image/Webp/noFilter" },
+    { id: 6, name: "Welcome!", type: "welcome", image: "https://tr.rbxcdn.com/180DAY-2d822d79429f504344a02d0550c4295f/150/150/Image/Webp/noFilter" },
   ];
 
   // Mock experiences for Creations tab
@@ -199,7 +202,11 @@ const ProfilePage = () => {
              {/* Avatar with premium badge */}
              <div className="relative">
                <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700">
-                 <div className="w-full h-full bg-gray-300 dark:bg-gray-600"></div>
+                 <img 
+                   src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-903254C5702EE154B5EA564D1D4CB860-Png/150/150/AvatarHeadshot/Webp/noFilter"
+                   alt="reahan00R"
+                   className="w-full h-full object-cover"
+                 />
                </div>
                {/* Premium badge */}
                <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-blue-500 rounded-full flex items-center justify-center border-2 border-white dark:border-gray-900">
@@ -219,7 +226,10 @@ const ProfilePage = () => {
                  
                  {/* Action Buttons */}
                  <div className="flex items-center gap-2">
-                   <button className="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100 font-medium rounded-lg text-sm transition-colors">
+                   <button 
+                     onClick={() => setShowEditProfileModal(true)}
+                     className="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100 font-medium rounded-lg text-sm transition-colors"
+                   >
                      Edit Profile
                    </button>
                    <Link href="/avatar">
@@ -434,26 +444,35 @@ const ProfilePage = () => {
               <div className="py-6 border-b border-gray-200 dark:border-gray-800">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">Groups</h2>
-                  <div className="flex items-center gap-2">
-                    {/* View mode toggle */}
+                  <div className="flex items-center gap-1">
+                    {/* View mode toggle - List/Carousel View */}
                     <button
                       onClick={() => setGroupsViewMode("carousel")}
-                      className={`p-1.5 rounded ${groupsViewMode === "carousel" ? "bg-gray-200 dark:bg-gray-700" : "hover:bg-gray-100 dark:hover:bg-gray-800"}`}
+                      className={`p-2 rounded transition-colors ${
+                        groupsViewMode === "carousel"
+                          ? "bg-gray-100 dark:bg-gray-800"
+                          : "bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800"
+                      }`}
                     >
-                      <ChevronRight className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                      <Monitor className="w-4 h-4 text-gray-600 dark:text-gray-400" />
                     </button>
+                    {/* Grid View */}
                     <button
                       onClick={() => setGroupsViewMode("grid")}
-                      className={`p-1.5 rounded ${groupsViewMode === "grid" ? "bg-gray-200 dark:bg-gray-700" : "hover:bg-gray-100 dark:hover:bg-gray-800"}`}
+                      className={`p-2 rounded transition-colors ${
+                        groupsViewMode === "grid"
+                          ? "bg-gray-100 dark:bg-gray-800"
+                          : "bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800"
+                      }`}
                     >
                       <LayoutGrid className="w-4 h-4 text-gray-600 dark:text-gray-400" />
                     </button>
                   </div>
                 </div>
 
-                {/* Carousel View */}
+                {/* Carousel View - BIG with game thumbnail */}
                 {groupsViewMode === "carousel" && (
-                  <div className="relative">
+                  <div className="relative bg-gray-50 dark:bg-gray-800/30 rounded-lg p-6">
                     {/* Left Arrow */}
                     {showPrevGroup && (
                       <button
@@ -464,43 +483,48 @@ const ProfilePage = () => {
                       </button>
                     )}
 
-                    {/* Group Card */}
-                    <div className="max-w-[600px] mx-auto">
+                    {/* Group Card - ONE at a time, BIG */}
+                    <div className="flex items-start gap-6">
                       {visibleGroups.map((group) => (
-                        <Link key={group.id} href={`/groups/${group.id}`} className="block">
-                          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:border-gray-400 dark:hover:border-gray-500 transition-colors">
-                            <div className="flex items-start gap-4">
-                              <div className="w-24 h-24 rounded overflow-hidden bg-gray-100 dark:bg-gray-700 flex-shrink-0">
-                                <img src={group.image} alt={group.name} className="w-full h-full object-cover" />
+                        <div key={group.id} className="flex items-start gap-6 w-full">
+                          {/* Large Game Thumbnail */}
+                          <div className="w-64 h-64 rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700 flex-shrink-0">
+                            <img src={group.image} alt={group.name} className="w-full h-full object-cover" />
+                          </div>
+                          
+                          {/* Group Info */}
+                          <div className="flex-1">
+                            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2 mb-2">
+                              {group.name}
+                              {group.verified && (
+                                <svg className="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                </svg>
+                              )}
+                            </h3>
+                            
+                            <p className="text-base text-gray-600 dark:text-gray-400 mb-4">
+                              😊 Welcome to our group!
+                            </p>
+                            
+                            <p className="text-base text-gray-600 dark:text-gray-400 mb-4">
+                              🎮 Join our group to support us!
+                            </p>
+                            
+                            <div className="grid grid-cols-2 gap-6 mt-6">
+                              <div>
+                                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Members</p>
+                                <p className="text-lg font-bold text-gray-900 dark:text-gray-100">{group.members}</p>
                               </div>
-                              <div className="flex-1 min-w-0">
-                                <div className="flex items-start justify-between">
-                                  <div>
-                                    <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
-                                      {group.name}
-                                      {group.verified && (
-                                        <svg className="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
-                                          <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                        </svg>
-                                      )}
-                                    </h3>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                                      {group.members} Members
-                                    </p>
-                                  </div>
-                                </div>
-                                <div className="flex items-center gap-2 mt-3">
-                                  <span className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">
-                                    👑 {group.rank}
-                                  </span>
-                                </div>
-                                <p className="text-sm text-gray-600 dark:text-gray-400 mt-2 line-clamp-2">
-                                  😊 Welcome to our group!
+                              <div>
+                                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Rank</p>
+                                <p className="text-lg font-bold text-gray-900 dark:text-gray-100 flex items-center gap-1">
+                                  👑 {group.rank}
                                 </p>
                               </div>
                             </div>
                           </div>
-                        </Link>
+                        </div>
                       ))}
                     </div>
 
@@ -516,16 +540,17 @@ const ProfilePage = () => {
                   </div>
                 )}
 
-                {/* Grid View */}
+                {/* Grid View - SMALL cards showing ALL groups */}
                 {groupsViewMode === "grid" && (
                   <div className="grid grid-cols-2 gap-4">
                     {groups.map((group) => (
                       <Link key={group.id} href={`/groups/${group.id}`} className="block">
-                        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden hover:border-gray-400 dark:hover:border-gray-500 transition-colors">
-                          <div className="aspect-[16/9] bg-gray-100 dark:bg-gray-700 overflow-hidden">
+                        <div className="rounded-lg overflow-hidden hover:opacity-90 transition-opacity">
+                          {/* Small square icon */}
+                          <div className="aspect-square bg-gray-200 dark:bg-gray-700 overflow-hidden rounded-lg">
                             <img src={group.image} alt={group.name} className="w-full h-full object-cover" />
                           </div>
-                          <div className="p-3">
+                          <div className="pt-2">
                             <h3 className="text-sm font-bold text-gray-900 dark:text-gray-100 flex items-center gap-1 truncate">
                               {group.name}
                               {group.verified && (
@@ -534,8 +559,10 @@ const ProfilePage = () => {
                                 </svg>
                               )}
                             </h3>
-                            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">{group.members} Members</p>
-                            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">👑 {group.rank}</p>
+                            <p className="text-xs text-gray-600 dark:text-gray-400">{group.members} Members</p>
+                            <p className="text-xs text-gray-600 dark:text-gray-400 flex items-center gap-1">
+                              👑 {group.rank}
+                            </p>
                           </div>
                         </div>
                       </Link>
@@ -615,8 +642,18 @@ const ProfilePage = () => {
                  <div className="flex gap-4">
                    {badges.map((badge) => (
                      <div key={badge.id} className="cursor-pointer group">
-                       <div className="w-[120px] aspect-square rounded-lg overflow-hidden bg-gradient-to-br from-purple-400 to-blue-500 border border-gray-200 dark:border-gray-700 group-hover:border-gray-400 dark:group-hover:border-gray-500 transition-colors flex items-center justify-center">
-                         <div className="w-12 h-12 bg-white/20 rounded-full"></div>
+                       <div className="w-[120px] aspect-square rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700 border border-gray-200 dark:border-gray-700 group-hover:border-gray-400 dark:group-hover:border-gray-500 transition-colors">
+                         {badge.image ? (
+                           <img
+                             src={badge.image}
+                             alt={badge.name}
+                             className="w-full h-full object-cover"
+                           />
+                         ) : (
+                           <div className="w-full h-full bg-gradient-to-br from-purple-400 to-blue-500 flex items-center justify-center">
+                             <div className="w-12 h-12 bg-white/20 rounded-full"></div>
+                           </div>
+                         )}
                        </div>
                        <p className="mt-2 text-xs text-gray-900 dark:text-gray-100 text-center truncate">{badge.name}</p>
                      </div>
@@ -706,6 +743,77 @@ const ProfilePage = () => {
 
       {/* Footer */}
       <Footer />
+
+      {/* Sidebar */}
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
+      {/* Edit Profile Modal */}
+      {showEditProfileModal && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 px-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-2xl max-w-md w-full p-6 relative">
+            {/* Close button */}
+            <button
+              onClick={() => {
+                setShowEditProfileModal(false);
+                setEditedDisplayName(displayName);
+              }}
+              className="absolute top-4 right-4 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
+            >
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Header */}
+            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-1">
+              Change Display Name
+            </h2>
+            
+            {/* Warning message */}
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
+              Important: Your display name can only be changed once every 7 days
+            </p>
+
+            {/* Input */}
+            <div className="mb-2">
+              <input
+                type="text"
+                value={editedDisplayName}
+                onChange={(e) => setEditedDisplayName(e.target.value)}
+                maxLength={20}
+                className="w-full bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded px-4 py-2.5 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            {/* Character count */}
+            <div className="text-right text-sm text-gray-600 dark:text-gray-400 mb-6">
+              {editedDisplayName.length}/20
+            </div>
+
+            {/* Action buttons */}
+            <div className="flex items-center gap-3 justify-end">
+              <button
+                onClick={() => {
+                  setShowEditProfileModal(false);
+                  setEditedDisplayName(displayName);
+                }}
+                className="px-6 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100 font-medium rounded transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setDisplayName(editedDisplayName);
+                  setShowEditProfileModal(false);
+                }}
+                className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded transition-colors"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

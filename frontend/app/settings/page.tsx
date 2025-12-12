@@ -20,7 +20,7 @@ const SettingsPage = () => {
     { id: "privacy", label: "Privacy & content restrictions" },
     { id: "notifications", label: "Notifications" },
     { id: "spending", label: "Spending" },
-    { id: "subscriptions", label: "Subscriptions" },
+    { id: "membership", label: "Membership" },
     { id: "parental", label: "Parental controls" },
     { id: "permissions", label: "App permissions" },
     { id: "browser", label: "Browser preferences" },

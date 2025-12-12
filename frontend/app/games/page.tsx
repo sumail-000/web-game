@@ -94,8 +94,8 @@ const GamesPage = () => {
 
   const GameCard = ({ game }: { game: any }) => (
     <Link href={`/games/${game.id}`} className="block group">
-      <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-        <div className="relative aspect-[16/10]">
+      <div className="rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+        <div className="relative aspect-[16/10] bg-gray-200 dark:bg-gray-700">
           <Image
             src={game.image}
             alt={game.title}
@@ -103,8 +103,8 @@ const GamesPage = () => {
             className="object-cover"
           />
         </div>
-        <div className="p-3">
-          <h3 className="font-semibold text-sm text-gray-900 dark:text-gray-100 mb-2 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400">
+        <div className="pt-2">
+          <h3 className="font-semibold text-sm text-gray-900 dark:text-gray-100 mb-1 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400">
             {game.title}
           </h3>
           <div className="flex items-center gap-3 text-xs text-gray-600 dark:text-gray-400">

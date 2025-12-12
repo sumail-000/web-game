@@ -1,6 +1,7 @@
 import Link from "next/link";
 import SignupForm from "../components/SignupForm";
 import Footer from "../components/Footer";
+import { ThemeToggle } from "../components/ThemeToggle";
 
 const SignupPage = () => {
   return (
@@ -14,19 +15,25 @@ const SignupPage = () => {
       {/* Content */}
       <div className="relative z-10 min-h-screen flex flex-col">
         {/* Header */}
-        <header className="flex items-center justify-between px-6 py-4">
-          <div className="flex-1" />
+        <header className="flex items-center justify-between gap-4 px-6 py-3">
+          {/* Left - Empty spacer */}
+          <div className="flex-1"></div>
+          
+          {/* Center - Logo */}
           <div className="flex items-center justify-center">
-            <div className="glass-card px-8 py-4 rounded-xl">
-              <h1 className="text-4xl font-black text-foreground tracking-wider uppercase" style={{ fontFamily: 'Impact, "Arial Black", sans-serif' }}>
+            <div className="glass-card px-8 py-3 rounded-xl">
+              <h1 className="text-3xl font-black text-foreground tracking-wider uppercase" style={{ fontFamily: 'Impact, "Arial Black", sans-serif' }}>
                 ADVENTUREBLOX
               </h1>
             </div>
           </div>
-          <div className="flex-1 flex justify-end">
+          
+          {/* Right - Theme toggle and Login button */}
+          <div className="flex-1 flex justify-end items-center gap-2">
+            <ThemeToggle />
             <Link 
               href="/login"
-              className="bg-foreground text-background font-bold px-6 py-2 rounded hover:bg-foreground/90 transition-colors text-sm"
+              className="bg-foreground text-background font-bold px-5 py-2 rounded hover:bg-foreground/90 transition-colors text-sm"
             >
               Log In
             </Link>

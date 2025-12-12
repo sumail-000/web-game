@@ -2,10 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import Footer from "../components/Footer";
+import { ThemeToggle } from "../components/ThemeToggle";
 
 const LoginPage = () => {
+  const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showEmailCodeModal, setShowEmailCodeModal] = useState(false);
@@ -14,6 +17,8 @@ const LoginPage = () => {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Login attempt:", { username, password });
+    // Redirect to home after successful login
+    router.push("/home");
   };
 
   const handleSendCode = (e: React.FormEvent) => {
@@ -33,42 +38,48 @@ const LoginPage = () => {
       {/* Content */}
       <div className="relative z-10 min-h-screen flex flex-col">
         {/* Header with dark semi-transparent background */}
-        <header className="bg-background/70 backdrop-blur-sm flex items-center justify-between px-6 py-3">
-          {/* Logo */}
-          <Link href="/signup" className="flex items-center gap-4">
-            <div className="w-8 h-8 bg-foreground/10 rounded flex items-center justify-center border border-border/30">
-              <span className="text-foreground font-bold text-lg">◈</span>
-            </div>
-          </Link>
+        <header className="bg-background/70 backdrop-blur-sm flex items-center justify-between gap-4 px-6 py-2.5">
+          {/* Left Section - Logo and Navigation */}
+          <div className="flex items-center gap-4 flex-1">
+            {/* Logo */}
+            <Link href="/signup" className="flex-shrink-0">
+              <div className="w-9 h-9 bg-foreground/10 rounded-lg flex items-center justify-center border border-border/30 hover:bg-foreground/20 transition-colors">
+                <span className="text-foreground font-bold text-lg">◈</span>
+              </div>
+            </Link>
 
-          {/* Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
-            <a href="/games" className="text-foreground font-semibold hover:text-foreground/80 transition-colors">
-              Games
-            </a>
-            <a href="/catalog" className="text-foreground font-semibold hover:text-foreground/80 transition-colors">
-              Catalog
-            </a>
-            <a href="/create" className="text-foreground font-semibold hover:text-foreground/80 transition-colors">
-              Create
-            </a>
-            <a href="/adventurebux" className="text-foreground font-semibold hover:text-foreground/80 transition-colors">
-              AdventureBux
-            </a>
-          </nav>
+            {/* Navigation */}
+            <nav className="hidden lg:flex items-center gap-1">
+              <a href="/games" className="text-foreground font-medium hover:text-foreground/80 transition-colors px-3 py-1.5 rounded hover:bg-foreground/10 text-sm">
+                Games
+              </a>
+              <a href="/catalog" className="text-foreground font-medium hover:text-foreground/80 transition-colors px-3 py-1.5 rounded hover:bg-foreground/10 text-sm">
+                Catalog
+              </a>
+              <a href="/create" className="text-foreground font-medium hover:text-foreground/80 transition-colors px-3 py-1.5 rounded hover:bg-foreground/10 text-sm">
+                Create
+              </a>
+              <a href="/adventurebux" className="text-foreground font-medium hover:text-foreground/80 transition-colors px-3 py-1.5 rounded hover:bg-foreground/10 text-sm">
+                AdventureBux
+              </a>
+            </nav>
 
-          {/* Search and Signup */}
-          <div className="flex items-center gap-4">
-            <div className="hidden md:flex items-center gap-2 border border-border/40 rounded-full px-4 py-1.5 bg-secondary/20">
-              <Search className="w-4 h-4 text-foreground/50" />
+            {/* Search Bar */}
+            <div className="hidden md:flex items-center gap-2 border border-border/40 rounded-lg px-3 py-1.5 bg-secondary/20 w-64">
+              <Search className="w-4 h-4 text-foreground/50 flex-shrink-0" />
               <input
                 type="text"
                 placeholder="Search"
-                className="bg-transparent text-foreground placeholder:text-foreground/50 text-sm focus:outline-none w-28"
+                className="bg-transparent text-foreground placeholder:text-foreground/50 text-sm focus:outline-none w-full"
               />
             </div>
+          </div>
+
+          {/* Right Section - Theme toggle and Signup */}
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <ThemeToggle />
             <Link href="/signup">
-              <button className="bg-accent hover:bg-accent/90 text-accent-foreground font-bold px-5 py-1.5 h-9 rounded">
+              <button className="bg-accent hover:bg-accent/90 text-accent-foreground font-bold px-5 py-2 rounded transition-colors text-sm">
                 Sign Up
               </button>
             </Link>
