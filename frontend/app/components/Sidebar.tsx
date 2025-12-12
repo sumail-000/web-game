@@ -96,21 +96,13 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             <span className="font-medium">Trade</span>
           </Link>
           
-          <Link 
-            href="/groups" 
+          <Link
+            href="/groups/8"
             className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
             onClick={onClose}
           >
             <Users className="w-5 h-5" />
             <span className="font-medium">Groups</span>
-          </Link>
-          
-          <Link 
-            href="/groups/8" 
-            className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 pl-10"
-            onClick={onClose}
-          >
-            <span className="font-medium text-sm">My Groups</span>
           </Link>
           
           <Link 

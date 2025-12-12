@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Search, Menu, Bell, Settings as SettingsIcon, MoreHorizontal, ImagePlus, X } from "lucide-react";
+import { MoreHorizontal, ImagePlus, X } from "lucide-react";
 import Footer from "../../components/Footer";
-import { ThemeToggle } from "../../components/ThemeToggle";
 import Sidebar from "../../components/Sidebar";
+import Header from "../../components/Header";
 import GamesSection from "../../components/groups/GamesSection";
 import MembersSection from "../../components/groups/MembersSection";
 import SocialLinksSection from "../../components/groups/SocialLinksSection";
@@ -13,7 +13,6 @@ import DescriptionSection from "../../components/groups/DescriptionSection";
 
 const GroupDetailPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [settingsOpen, setSettingsOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState(8);
   const [activeTab, setActiveTab] = useState("About");
@@ -22,6 +21,8 @@ const GroupDetailPage = () => {
   const [announcementTitle, setAnnouncementTitle] = useState("");
   const [announcementContent, setAnnouncementContent] = useState("");
   const [announcementImage, setAnnouncementImage] = useState<string | null>(null);
+  const [groupSearch, setGroupSearch] = useState("");
+  const [openPostMenu, setOpenPostMenu] = useState<number | null>(null);
 
   // Mock user's groups with full details
   const userGroups = [
@@ -65,6 +66,32 @@ const GroupDetailPage = () => {
     },
   ];
 
+  // Mock allies/alliance communities
+  const allies = [
+    { id: 1, name: "DuckXander Valentine", image: "https://robohash.org/duckval?set=set3", members: 271 },
+    { id: 2, name: "DuckXander St. Patrick", image: "https://robohash.org/duckstpat?set=set3", members: 135 },
+    { id: 3, name: "DuckXander Easter", image: "https://robohash.org/duckeaster?set=set3", members: 188 },
+    { id: 4, name: "DuckXander 4th of July", image: "https://robohash.org/duck4th?set=set3", members: 119 },
+    { id: 5, name: "DuckXander Halloween", image: "https://robohash.org/duckhalloween?set=set3", members: 178 },
+    { id: 6, name: "DuckXander Christmas", image: "https://robohash.org/duckxmas?set=set3", members: 146 },
+  ];
+
+  // Mock store items
+  const storeItems = [
+    { id: 1, name: "Cartoony White Scarf", image: "https://robohash.org/scarf1?set=set3", price: 50 },
+    { id: 2, name: "Cartoony Purple Scarf", image: "https://robohash.org/scarf2?set=set3", price: 50 },
+    { id: 3, name: "Cartoony Blue Scarf", image: "https://robohash.org/scarf3?set=set3", price: 50 },
+    { id: 4, name: "Cartoony Green Scarf", image: "https://robohash.org/scarf4?set=set3", price: 50 },
+    { id: 5, name: "Cartoony Red Scarf", image: "https://robohash.org/scarf5?set=set3", price: 50 },
+    { id: 6, name: "Cartoony Rainbow Scarf", image: "https://robohash.org/scarf6?set=set3", price: 50 },
+    { id: 7, name: "Grey Scarf", image: "https://robohash.org/greyscarf?set=set3", price: 50 },
+    { id: 8, name: "Green Scarf", image: "https://robohash.org/greenscarf?set=set3", price: 50 },
+    { id: 9, name: "Forest Green Scarf", image: "https://robohash.org/forestscarf?set=set3", price: 50 },
+    { id: 10, name: "Pink Scarf", image: "https://robohash.org/pinkscarf?set=set3", price: 50 },
+    { id: 11, name: "Blue Scarf", image: "https://robohash.org/bluescarf?set=set3", price: 50 },
+    { id: 12, name: "Red Scarf", image: "https://robohash.org/redscarf?set=set3", price: 50 },
+  ];
+
   const tabs = ["About", "Store", "Alliance"];
 
   return (
@@ -72,90 +99,8 @@ const GroupDetailPage = () => {
       {/* Sidebar */}
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-      {/* Top Navigation Bar */}
-      <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50">
-        <div className="flex items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-4">
-            <button onClick={() => setSidebarOpen(true)} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-              <Menu className="w-6 h-6 text-gray-700 dark:text-gray-300" />
-            </button>
-            
-            <Link href="/home" className="flex items-center">
-              <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">◈</span>
-              </div>
-            </Link>
-          </div>
-
-          <nav className="hidden md:flex items-center gap-6">
-            <Link href="/games" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-semibold text-sm">
-              Games
-            </Link>
-            <Link href="/catalog" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-semibold text-sm">
-              Catalog
-            </Link>
-            <Link href="/create" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-semibold text-sm">
-              Create
-            </Link>
-            <Link href="/adventurebux" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-semibold text-sm">
-              AdventureBux
-            </Link>
-          </nav>
-
-          <div className="flex items-center gap-3">
-            <div className="hidden md:flex items-center gap-2 bg-gray-100 dark:bg-gray-800 rounded-lg px-4 py-2 w-64">
-              <Search className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-transparent text-gray-700 dark:text-gray-300 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-sm focus:outline-none w-full"
-              />
-            </div>
-            
-            <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg relative">
-              <Bell className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-            </button>
-            
-            <ThemeToggle />
-            
-            <div className="flex items-center gap-1 px-3 py-1.5 bg-gray-100 dark:bg-gray-800 rounded-lg">
-              <div className="w-5 h-5 bg-gray-800 dark:bg-gray-200 rounded-full flex items-center justify-center">
-                <span className="text-white dark:text-gray-900 text-xs font-bold">◈</span>
-              </div>
-              <span className="text-gray-900 dark:text-gray-100 font-semibold text-sm">0</span>
-            </div>
-            
-            <div className="relative">
-              <button 
-                onClick={() => setSettingsOpen(!settingsOpen)}
-                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
-              >
-                <SettingsIcon className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-              </button>
-              
-              {settingsOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
-                  <Link 
-                    href="/settings" 
-                    className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                    onClick={() => setSettingsOpen(false)}
-                  >
-                    Settings
-                  </Link>
-                </div>
-              )}
-            </div>
-            
-            <Link href="/profile" className="flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg px-2 py-1">
-              <div className="w-8 h-8 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
-              <span className="text-gray-900 dark:text-gray-100 font-semibold text-sm hidden md:block">reahan00R</span>
-            </Link>
-          </div>
-        </div>
-      </header>
+      {/* Header */}
+      <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} setSidebarOpen={setSidebarOpen} />
 
       {/* Create Group Button Bar */}
       <div className="flex justify-end p-3 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
@@ -170,8 +115,30 @@ const GroupDetailPage = () => {
       <div className="flex max-w-[1000px] mx-auto mt-4 gap-4 px-4">
         {/* Sidebar - My Groups */}
         <div className="w-[150px] bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg flex-shrink-0">
+          {/* Header */}
+          <div className="flex items-center justify-between px-3 py-2 border-b border-gray-200 dark:border-gray-700">
+            <h2 className="text-sm font-bold text-gray-900 dark:text-gray-100">Groups</h2>
+            <Link href="/groups" className="text-xs text-blue-600 dark:text-blue-400 hover:underline">
+              See All
+            </Link>
+          </div>
+
+          {/* Search Bar */}
+          <div className="p-2">
+            <input
+              type="text"
+              value={groupSearch}
+              onChange={(e) => setGroupSearch(e.target.value)}
+              placeholder="Search my groups"
+              className="w-full px-2 py-1.5 text-xs bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            />
+          </div>
+
+          {/* Groups List */}
           <div className="py-2">
-            {userGroups.map((group) => (
+            {userGroups.filter(group => 
+              group.fullName.toLowerCase().includes(groupSearch.toLowerCase())
+            ).map((group) => (
               <button
                 key={group.id}
                 onClick={() => setSelectedGroup(group.id)}
@@ -235,17 +202,85 @@ const GroupDetailPage = () => {
               </button>
 
               {groupMenuOpen && (
-                <div className="absolute right-0 top-full mt-1 w-40 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-lg z-10">
-                  {["Group Admin", "Make Primary", "Leave Group", "Advertise Group", "Audit Log", "Report Abuse"].map((item) => (
+                <>
+                  {/* Backdrop to close menu */}
+                  <div 
+                    className="fixed inset-0 z-10"
+                    onClick={() => setGroupMenuOpen(false)}
+                  />
+                  
+                  {/* Dropdown Menu */}
+                  <div className="absolute right-0 top-full mt-1 w-56 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-lg z-20 py-1">
+                    {/* Admin Options - Only show if user is Admin or Owner */}
+                    {(currentGroup.rank === "Admin" || currentGroup.rank === "Owner") && (
+                      <>
+                        <Link href={`/groups/${selectedGroup}/configure`}>
+                          <button
+                            onClick={() => setGroupMenuOpen(false)}
+                            className="w-full px-4 py-2 text-left text-sm text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                          >
+                            Configure Group
+                          </button>
+                        </Link>
+                        <button
+                          onClick={() => {
+                            alert('Group Admin Panel');
+                            setGroupMenuOpen(false);
+                          }}
+                          className="w-full px-4 py-2 text-left text-sm text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                        >
+                          Group Admin
+                        </button>
+                        <div className="border-t border-gray-200 dark:border-gray-700 my-1"></div>
+                      </>
+                    )}
+                    
+                    {/* Regular Options */}
                     <button
-                      key={item}
-                      className="w-full px-4 py-2 text-left text-sm text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors first:rounded-t last:rounded-b"
-                      onClick={() => setGroupMenuOpen(false)}
+                      onClick={() => {
+                        alert('Make Primary');
+                        setGroupMenuOpen(false);
+                      }}
+                      className="w-full px-4 py-2 text-left text-sm text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                     >
-                      {item}
+                      Make Primary
                     </button>
-                  ))}
-                </div>
+                    <button
+                      onClick={() => {
+                        alert('Leave Group');
+                        setGroupMenuOpen(false);
+                      }}
+                      className="w-full px-4 py-2 text-left text-sm text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    >
+                      Leave Group
+                    </button>
+                    
+                    {/* Owner Only Option */}
+                    {currentGroup.rank === "Owner" && (
+                      <button
+                        onClick={() => {
+                          alert('Change Owner');
+                          setGroupMenuOpen(false);
+                        }}
+                        className="w-full px-4 py-2 text-left text-sm text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                      >
+                        Change Owner
+                      </button>
+                    )}
+                    
+                    <div className="border-t border-gray-200 dark:border-gray-700 my-1"></div>
+                    
+                    <button
+                      onClick={() => {
+                        alert('Report Abuse');
+                        setGroupMenuOpen(false);
+                      }}
+                      className="w-full px-4 py-2 text-left text-sm text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    >
+                      Report Abuse
+                    </button>
+                  </div>
+                </>
               )}
             </div>
           </div>
@@ -256,7 +291,7 @@ const GroupDetailPage = () => {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-6 py-3 text-sm font-medium transition-colors relative ${
+                className={`flex-1 px-6 py-3 text-sm font-medium transition-colors relative ${
                   activeTab === tab
                     ? "text-gray-900 dark:text-gray-100"
                     : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
@@ -273,21 +308,27 @@ const GroupDetailPage = () => {
           {/* Tab Content */}
           {activeTab === "About" && (
             <>
-              {/* Create Announcement Section */}
+              {/* Announcements Section */}
               <div className="p-4 bg-white dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
-                <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-3">Create Announcement</h2>
+                <div className="flex items-center justify-between mb-3">
+                  <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">Announcements</h2>
+                  
+                  {/* Only show Create button for Admin/Owner */}
+                  {(currentGroup.rank === "Admin" || currentGroup.rank === "Owner") && (
+                    <Link href={`/groups/${selectedGroup}/configure`}>
+                      <button 
+                        onClick={() => setActiveSection && setActiveSection("Announcements")}
+                        className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded transition-colors"
+                      >
+                        Create Announcement
+                      </button>
+                    </Link>
+                  )}
+                </div>
                 
-                <div className="flex gap-3">
-                  <input
-                    type="text"
-                    placeholder="Enter announcement title"
-                    className="flex-1 px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <Link href="/groups/8/create-announcement">
-                    <button className="px-6 py-2 bg-cyan-500 hover:bg-cyan-600 text-white text-sm font-semibold rounded transition-colors whitespace-nowrap">
-                      Create Announcement
-                    </button>
-                  </Link>
+                {/* No announcements message */}
+                <div className="text-center py-6 text-gray-500 dark:text-gray-400 text-sm">
+                  No announcements yet
                 </div>
               </div>
 
@@ -337,9 +378,39 @@ const GroupDetailPage = () => {
                         <p className="text-sm text-gray-900 dark:text-gray-100 mt-0.5">{post.message}</p>
                         <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{post.date}</p>
                       </div>
-                      <button className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors h-fit">
-                        <MoreHorizontal className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                      </button>
+                      
+                      {/* Three-dot menu */}
+                      <div className="relative">
+                        <button 
+                          onClick={() => setOpenPostMenu(openPostMenu === post.id ? null : post.id)}
+                          className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors h-fit"
+                        >
+                          <MoreHorizontal className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                        </button>
+
+                        {openPostMenu === post.id && (
+                          <>
+                            {/* Backdrop to close dropdown */}
+                            <div 
+                              className="fixed inset-0 z-10"
+                              onClick={() => setOpenPostMenu(null)}
+                            />
+                            
+                            {/* Dropdown Menu */}
+                            <div className="absolute right-0 top-full mt-1 w-full min-w-[120px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-lg z-20 py-1 max-h-[300px] overflow-y-auto">
+                              <button
+                                onClick={() => {
+                                  alert('Report Abuse functionality');
+                                  setOpenPostMenu(null);
+                                }}
+                                className="w-full px-3 py-2 text-left text-sm transition-colors text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700"
+                              >
+                                Report Abuse
+                              </button>
+                            </div>
+                          </>
+                        )}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -348,14 +419,89 @@ const GroupDetailPage = () => {
           )}
 
           {activeTab === "Store" && (
-            <div className="p-8 text-center text-gray-600 dark:text-gray-400">
-              <p>No items in store</p>
+            <div className="p-4">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Store</h2>
+                <Link href="/groups/store" className="text-sm text-blue-600 dark:text-blue-400 hover:underline font-semibold">
+                  See All →
+                </Link>
+              </div>
+              
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                {storeItems.map((item) => (
+                  <div key={item.id} className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
+                    <div className="aspect-square bg-gray-100 dark:bg-gray-700 overflow-hidden">
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="p-3">
+                      <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate" title={item.name}>
+                        {item.name}
+                      </h3>
+                      <div className="flex items-center gap-1 mt-1">
+                        <div className="w-4 h-4 bg-gray-800 dark:bg-gray-200 rounded-full flex items-center justify-center flex-shrink-0">
+                          <span className="text-white dark:text-gray-900 text-[10px] font-bold">◈</span>
+                        </div>
+                        <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                          {item.price}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex items-center justify-center gap-3 mt-6 text-sm text-gray-600 dark:text-gray-400">
+                <button className="hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
+                  &lt;
+                </button>
+                <span className="font-medium">Page 1</span>
+                <button className="hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
+                  &gt;
+                </button>
+              </div>
             </div>
           )}
 
           {activeTab === "Alliance" && (
-            <div className="p-8 text-center text-gray-600 dark:text-gray-400">
-              <p>No alliances</p>
+            <div className="p-4">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Allies</h2>
+                <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                  <button className="hover:text-gray-900 dark:hover:text-gray-100">
+                    &lt;
+                  </button>
+                  <span>Page 1</span>
+                  <button className="hover:text-gray-900 dark:hover:text-gray-100">
+                    &gt;
+                  </button>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                {allies.map((ally) => (
+                  <div key={ally.id} className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
+                    <div className="aspect-square bg-gray-100 dark:bg-gray-700 overflow-hidden">
+                      <img
+                        src={ally.image}
+                        alt={ally.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="p-3">
+                      <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate" title={ally.name}>
+                        {ally.name}
+                      </h3>
+                      <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                        {ally.members} Members
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>

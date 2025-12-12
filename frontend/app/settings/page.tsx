@@ -2,11 +2,16 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Search, Menu, Bell, Settings as SettingsIcon, ChevronRight } from "lucide-react";
+import { ChevronRight, ExternalLink } from "lucide-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPerson, faPersonDress } from "@fortawesome/free-solid-svg-icons";
 import Footer from "../components/Footer";
+import Header from "../components/Header";
+import Sidebar from "../components/Sidebar";
 
 const SettingsPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("account-info");
 
   const settingsSections = [
@@ -22,92 +27,29 @@ const SettingsPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Top Navigation Bar */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div className="flex items-center justify-between px-4 py-3">
-          {/* Left Section - Menu & Logo */}
-          <div className="flex items-center gap-4">
-            <button className="p-2 hover:bg-gray-100 rounded-lg">
-              <Menu className="w-6 h-6 text-gray-700" />
-            </button>
-            
-            <Link href="/home" className="flex items-center">
-              <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">◈</span>
-              </div>
-            </Link>
-          </div>
+    <div className="min-h-screen bg-white dark:bg-gray-900">
+      {/* Sidebar */}
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-          {/* Center Section - Navigation Links */}
-          <nav className="hidden md:flex items-center gap-6">
-            <Link href="/games" className="text-gray-700 hover:text-gray-900 font-semibold text-sm">
-              Games
-            </Link>
-            <Link href="/catalog" className="text-gray-700 hover:text-gray-900 font-semibold text-sm">
-              Catalog
-            </Link>
-            <Link href="/create" className="text-gray-700 hover:text-gray-900 font-semibold text-sm">
-              Create
-            </Link>
-            <Link href="/adventurebux" className="text-gray-700 hover:text-gray-900 font-semibold text-sm">
-              AdventureBux
-            </Link>
-          </nav>
+      {/* Header */}
+      <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} setSidebarOpen={setSidebarOpen} />
 
-          {/* Right Section - Search & User */}
-          <div className="flex items-center gap-3">
-            <div className="hidden md:flex items-center gap-2 bg-gray-100 rounded-lg px-4 py-2 w-64">
-              <Search className="w-4 h-4 text-gray-500" />
-              <input
-                type="text"
-                placeholder="Search"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-transparent text-gray-700 placeholder:text-gray-500 text-sm focus:outline-none w-full"
-              />
-            </div>
-            
-            <button className="p-2 hover:bg-gray-100 rounded-lg relative">
-              <Bell className="w-5 h-5 text-gray-700" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-            </button>
-            
-            <div className="flex items-center gap-1 px-3 py-1.5 bg-gray-100 rounded-lg">
-              <div className="w-5 h-5 bg-gray-800 rounded-full flex items-center justify-center">
-                <span className="text-white text-xs font-bold">◈</span>
-              </div>
-              <span className="text-gray-900 font-semibold text-sm">0</span>
-            </div>
-            
-            <button className="p-2 hover:bg-gray-100 rounded-lg">
-              <SettingsIcon className="w-5 h-5 text-gray-700" />
-            </button>
-            
-            <Link href="/profile" className="flex items-center gap-2 hover:bg-gray-100 rounded-lg px-2 py-1">
-              <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
-              <span className="text-gray-900 font-semibold text-sm hidden md:block">reahan00R</span>
-            </Link>
-          </div>
-        </div>
-      </header>
+      {/* Main Content - Centered and Tight */}
+      <main className="max-w-4xl mx-auto px-4 py-4">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Settings</h1>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-8">Settings</h1>
-
-        <div className="flex gap-8">
+        <div className="flex gap-6">
           {/* Left Sidebar Navigation */}
-          <aside className="w-64 flex-shrink-0">
-            <nav className="space-y-1">
+          <aside className="w-52 flex-shrink-0">
+            <nav className="space-y-0.5">
               {settingsSections.map((section) => (
                 <button
                   key={section.id}
                   onClick={() => setActiveSection(section.id)}
-                  className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${
+                  className={`w-full text-left px-3 py-2 text-sm transition-colors border-l-3 ${
                     activeSection === section.id
-                      ? "bg-gray-900 text-white font-semibold"
-                      : "text-gray-700 hover:bg-gray-100"
+                      ? "border-gray-900 dark:border-gray-100 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-semibold"
+                      : "border-transparent text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
                   }`}
                 >
                   {section.label}
@@ -117,58 +59,66 @@ const SettingsPage = () => {
           </aside>
 
           {/* Right Content Area */}
-          <div className="flex-1">
+          <div className="flex-1 max-w-2xl">
             {activeSection === "account-info" && (
-              <div className="bg-white rounded-lg border border-gray-200 p-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Account Info</h2>
+              <div className="bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 p-6">
+                <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">Account Info</h2>
                 
                 {/* Display Name */}
-                <div className="mb-6 pb-6 border-b border-gray-200">
-                  <div className="flex justify-between items-center">
+                <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+                  <div className="flex justify-between items-start">
                     <div>
-                      <div className="text-sm font-semibold text-gray-700 mb-1">Display Name</div>
-                      <div className="text-gray-900">reahan00R</div>
+                      <div className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Display Name:</div>
+                      <div className="text-gray-900 dark:text-gray-100">sumail_00</div>
                     </div>
-                    <button className="text-blue-600 hover:text-blue-700 font-medium">
-                      <ChevronRight className="w-5 h-5" />
+                    <button className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 p-1">
+                      <ExternalLink className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
 
                 {/* Username */}
-                <div className="mb-6 pb-6 border-b border-gray-200">
-                  <div className="flex justify-between items-center">
+                <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+                  <div className="flex justify-between items-start">
                     <div>
-                      <div className="text-sm font-semibold text-gray-700 mb-1">Username</div>
-                      <div className="text-gray-900">reahan00R</div>
+                      <div className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Username:</div>
+                      <div className="text-gray-900 dark:text-gray-100">sumail_00</div>
                     </div>
-                    <button className="text-blue-600 hover:text-blue-700 font-medium">
-                      <ChevronRight className="w-5 h-5" />
+                    <button className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 p-1">
+                      <ExternalLink className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
 
-                {/* Parental Recovery Email */}
-                <div className="mb-6 pb-6 border-b border-gray-200">
-                  <div className="flex justify-between items-center">
+                {/* Email */}
+                <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+                  <div className="flex justify-between items-start">
                     <div>
-                      <div className="text-sm font-semibold text-gray-700 mb-1">Parental Recovery Email</div>
-                      <div className="text-gray-600">None</div>
+                      <div className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Email:</div>
+                      <div className="text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                        a***********@gmail.com
+                        <span className="inline-flex items-center gap-1 text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full">
+                          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                          </svg>
+                          Verified
+                        </span>
+                      </div>
                     </div>
-                    <button className="px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50">
-                      Add
+                    <button className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 p-1">
+                      <ExternalLink className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
 
                 {/* Login Methods */}
-                <div className="mb-6 pb-6 border-b border-gray-200">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">Login Methods</h3>
+                <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-3">Login Methods</h3>
                   <div className="flex justify-between items-center">
                     <div>
-                      <div className="text-sm text-gray-700">Passkey: 1 passkey(s) added</div>
+                      <div className="text-sm text-gray-700 dark:text-gray-300">Passkey: <span className="font-medium">1 passkey(s) added</span></div>
                     </div>
-                    <button className="px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50">
+                    <button className="px-4 py-1.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded text-sm text-gray-700 dark:text-gray-200 font-medium hover:bg-gray-50 dark:hover:bg-gray-600">
                       Manage
                     </button>
                   </div>
@@ -176,64 +126,140 @@ const SettingsPage = () => {
 
                 {/* Personal Section */}
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">Personal</h3>
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-3">Personal</h3>
                   
                   {/* Age Group */}
-                  <div className="mb-4">
-                    <div className="text-sm font-semibold text-gray-700 mb-1">Age Group</div>
-                    <div className="text-gray-900">5-8</div>
+                  <div className="mb-3">
+                    <div className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Age Group:</div>
+                    <div className="text-gray-900 dark:text-gray-100">21+</div>
                   </div>
 
                   {/* Birthday */}
-                  <div className="mb-6 pb-6 border-b border-gray-200">
-                    <div className="flex justify-between items-center">
+                  <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+                    <div className="flex justify-between items-start">
                       <div>
-                        <div className="text-sm font-semibold text-gray-700 mb-1">Birthday</div>
-                        <div className="text-gray-900">Jan 1, 2019</div>
+                        <div className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Birthday:</div>
+                        <div className="text-gray-900 dark:text-gray-100">Mar 21, 2003</div>
                       </div>
-                      <button className="text-blue-600 hover:text-blue-700 font-medium">
-                        <ChevronRight className="w-5 h-5" />
+                      <button className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 p-1">
+                        <ExternalLink className="w-4 h-4" />
                       </button>
                     </div>
                   </div>
 
                   {/* Age Verification Banner */}
-                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
-                    <h4 className="font-bold text-gray-900 mb-2">Check your age to get more features</h4>
-                    <p className="text-sm text-gray-600 mb-4">We can estimate your age with a selfie.</p>
-                    <button className="w-full bg-gray-900 hover:bg-gray-800 text-white font-bold py-3 rounded-lg mb-2">
-                      Continue
-                    </button>
-                    <p className="text-xs text-gray-500 text-center">
+                  <div className="bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded p-4 mb-4">
+                    <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-1 text-sm">Check your age to get more features</h4>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mb-3">We can estimate your age with a selfie or you can verify your exact birthday with an ID.</p>
+                    <div className="flex gap-2 mb-2">
+                      <button className="flex-1 bg-gray-900 dark:bg-gray-100 hover:bg-gray-800 dark:hover:bg-gray-200 text-white dark:text-gray-900 font-semibold py-2 rounded text-sm">
+                        Continue with selfie
+                      </button>
+                      <button className="flex-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100 font-semibold py-2 rounded text-sm">
+                        Continue with ID
+                      </button>
+                    </div>
+                    <p className="text-xs text-gray-500 dark:text-gray-500 text-center">
                       Process operated by our third party service provider
                     </p>
                   </div>
 
                   {/* Gender */}
-                  <div className="mb-6">
-                    <div className="text-sm font-semibold text-gray-700 mb-3">Gender (Optional)</div>
-                    <div className="flex gap-4">
-                      <button className="flex-1 border border-gray-300 rounded-lg py-3 hover:bg-gray-50">
-                        Female
+                  <div className="mb-4">
+                    <div className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Gender (Optional)</div>
+                    <div className="flex gap-3">
+                      <button className="flex-1 border border-gray-300 dark:border-gray-600 rounded py-3 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 flex items-center justify-center">
+                        <FontAwesomeIcon icon={faPersonDress} className="w-5 h-5" />
                       </button>
-                      <button className="flex-1 border border-gray-300 rounded-lg py-3 hover:bg-gray-50">
-                        Male
+                      <button className="flex-1 border border-gray-300 dark:border-gray-600 rounded py-3 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 flex items-center justify-center">
+                        <FontAwesomeIcon icon={faPerson} className="w-5 h-5" />
                       </button>
                     </div>
                   </div>
 
                   {/* Language */}
-                  <div className="mb-6">
-                    <div className="text-sm font-semibold text-gray-700 mb-3">Language</div>
-                    <select className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-900 bg-white">
+                  <div className="mb-4">
+                    <div className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Language</div>
+                    <select className="w-full border border-gray-300 dark:border-gray-600 rounded px-3 py-2 text-sm text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700">
                       <option>English (United States)</option>
                     </select>
                   </div>
 
                   {/* Account Location */}
+                  <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+                    <div className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Account Location:</div>
+                    <div className="text-gray-900 dark:text-gray-100">Pakistan</div>
+                  </div>
+
+                  {/* Social Networks */}
                   <div>
-                    <div className="text-sm font-semibold text-gray-700 mb-1">Account Location</div>
-                    <div className="text-gray-900">Pakistan</div>
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-3">Social Networks</h3>
+                    
+                    <div className="space-y-3 mb-3">
+                      <div>
+                        <label className="text-sm text-gray-700 dark:text-gray-300 mb-1 block">Facebook</label>
+                        <input 
+                          type="text" 
+                          placeholder="e.g. www.facebook.com/Roblox"
+                          className="w-full border border-gray-300 dark:border-gray-600 rounded px-3 py-2 text-sm text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm text-gray-700 dark:text-gray-300 mb-1 block">X (formerly Twitter)</label>
+                        <input 
+                          type="text" 
+                          placeholder="e.g. @Roblox"
+                          className="w-full border border-gray-300 dark:border-gray-600 rounded px-3 py-2 text-sm text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm text-gray-700 dark:text-gray-300 mb-1 block">YouTube</label>
+                        <input 
+                          type="text" 
+                          placeholder="e.g. www.youtube.com/user/roblox"
+                          className="w-full border border-gray-300 dark:border-gray-600 rounded px-3 py-2 text-sm text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm text-gray-700 dark:text-gray-300 mb-1 block">Twitch</label>
+                        <input 
+                          type="text" 
+                          placeholder="e.g. www.twitch.tv/roblox/profile"
+                          className="w-full border border-gray-300 dark:border-gray-600 rounded px-3 py-2 text-sm text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500"
+                        />
+                      </div>
+                    </div>
+
+                    <button className="px-4 py-2 bg-gray-900 dark:bg-gray-100 hover:bg-gray-800 dark:hover:bg-gray-200 text-white dark:text-gray-900 font-semibold rounded text-sm">
+                      Save
+                    </button>
+
+                    <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                      <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">Social networks visibility</h4>
+                      <p className="text-xs text-gray-600 dark:text-gray-400 mb-3">Who can see links to your social network profiles</p>
+                      <div className="space-y-2">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input type="radio" name="visibility" className="w-4 h-4" />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">Everyone</span>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input type="radio" name="visibility" className="w-4 h-4" />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">Connections, followers & people I follow</span>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input type="radio" name="visibility" className="w-4 h-4" />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">Connections & people I follow</span>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input type="radio" name="visibility" className="w-4 h-4" />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">Connections</span>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input type="radio" name="visibility" className="w-4 h-4" defaultChecked />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">No one</span>
+                        </label>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -241,11 +267,11 @@ const SettingsPage = () => {
 
             {/* Other sections placeholder */}
             {activeSection !== "account-info" && (
-              <div className="bg-white rounded-lg border border-gray-200 p-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+              <div className="bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 p-6">
+                <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
                   {settingsSections.find(s => s.id === activeSection)?.label}
                 </h2>
-                <p className="text-gray-600">Settings content for this section will be added here.</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Settings content for this section will be added here.</p>
               </div>
             )}
           </div>
@@ -253,7 +279,7 @@ const SettingsPage = () => {
       </main>
 
       {/* Footer */}
-      <div className="mt-16">
+      <div className="mt-8">
         <Footer />
       </div>
     </div>

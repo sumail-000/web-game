@@ -1,33 +1,56 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { Search, Menu, Bell, Settings as SettingsIcon, MoreHorizontal, ChevronRight } from "lucide-react";
+import { MoreHorizontal, ChevronRight, ChevronLeft, ThumbsUp, Users, ExternalLink, Monitor, LayoutGrid } from "lucide-react";
 import Footer from "../components/Footer";
-import { ThemeToggle } from "../components/ThemeToggle";
 import Sidebar from "../components/Sidebar";
+import Header from "../components/Header";
 
 const ProfilePage = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [settingsOpen, setSettingsOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("About");
+  const [currentWearingIndex, setCurrentWearingIndex] = useState(0);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [bio, setBio] = useState("");
+  const [isEditingBio, setIsEditingBio] = useState(false);
+  const [editedBio, setEditedBio] = useState("");
+  const [viewMode, setViewMode] = useState<"list" | "grid">("list");
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setShowProfileMenu(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const tabs = ["About", "Creations"];
 
   // Mock data
   const currentlyWearing = [
-    { id: 1, name: "Man Torso", type: "Torso", image: "" },
-    { id: 2, name: "Man Right Arm", type: "Arm", image: "" },
-    { id: 3, name: "Man Left Arm", type: "Arm", image: "" },
-    { id: 4, name: "Man Left Leg", type: "Leg", image: "" },
-    { id: 5, name: "Man Right Leg", type: "Leg", image: "" },
-    { id: 6, name: "Pal Hair", type: "Hair", price: "Free" },
+    { id: 1, name: "Man Torso", type: "Torso", image: "", price: "" },
+    { id: 2, name: "Man Right Arm", type: "Arm", image: "", price: "" },
+    { id: 3, name: "Man Left Arm", type: "Arm", image: "", price: "" },
+    { id: 4, name: "Man Left Leg", type: "Leg", image: "", price: "" },
+    { id: 5, name: "Man Right Leg", type: "Leg", image: "", price: "" },
+    { id: 6, name: "Pal Hair", type: "Hair", image: "", price: "Free" },
+    { id: 7, name: "Blue and Black Motorcycle Shirt", type: "Shirt", image: "", price: "Free" },
+    { id: 8, name: "Dark Green Jeans", type: "Pants", image: "", price: "Free" },
+    { id: 9, name: "Hello", type: "Emote", image: "", price: "Free" },
+    { id: 10, name: "Stadium", type: "Emote", image: "", price: "Free" },
+    { id: 11, name: "Point2", type: "Emote", image: "", price: "Free" },
+    { id: 12, name: "Shrug", type: "Emote", image: "", price: "Free" },
   ];
 
   const favorites = [
-    { id: 1, name: "HOW TO TRAIN YOUR DRAGON", rating: "95%", plays: "2.6K" },
-    { id: 2, name: "Teamwork Puzzles 2 (Obby)", rating: "92%", plays: "3.2K" },
+    { id: 1, name: "HOW TO TRAIN YOUR DRAGON", rating: "95%", plays: "2.5K", image: "" },
+    { id: 2, name: "Teamwork Puzzles 2 (Obby)", rating: "92%", plays: "3.3K", image: "" },
   ];
 
   const connections = [
@@ -40,299 +63,646 @@ const ProfilePage = () => {
     { id: 7, name: "Rfgzxgfdd", username: "@Rfgzxgfdd", avatar: "https://robohash.org/rfg?set=set3" },
   ];
 
-  const badges = [
-    { id: 1, name: "First Catch", type: "event" },
-    { id: 2, name: "Ruby Rank Compl...", type: "achievement" },
-    { id: 3, name: "750 Gems", type: "currency" },
-    { id: 4, name: "150 Gems", type: "currency" },
-    { id: 5, name: "30 Gems", type: "currency" },
-    { id: 6, name: "Welcome!", type: "welcome" },
+  // Groups
+  const groups = [
+    { id: 1, name: "Building Roleplaying Fan ...", image: "https://robohash.org/buildingrp?set=set3", members: "5,036,909", rank: "Owner", verified: false },
+    { id: 2, name: "DuckXander", image: "https://robohash.org/duckxander?set=set3", members: "209,684", rank: "Duckies", verified: true },
   ];
+
+  const [groupsViewMode, setGroupsViewMode] = useState<"carousel" | "grid">("carousel");
+  const [currentGroupIndex, setCurrentGroupIndex] = useState(0);
+
+  // Groups carousel logic
+  const groupsPerPage = 1;
+  const maxGroupIndex = Math.max(0, groups.length - groupsPerPage);
+  const visibleGroups = groups.slice(currentGroupIndex, currentGroupIndex + groupsPerPage);
+  const showPrevGroup = currentGroupIndex > 0;
+  const showNextGroup = currentGroupIndex < maxGroupIndex;
+
+  const handlePrevGroup = () => {
+    setCurrentGroupIndex((prev) => Math.max(0, prev - groupsPerPage));
+  };
+
+  const handleNextGroup = () => {
+    setCurrentGroupIndex((prev) => Math.min(maxGroupIndex, prev + groupsPerPage));
+  };
+
+  // Roblox Badges
+  const robloxBadges = [
+    { id: 1, name: "Veteran", image: "" },
+  ];
+
+  // Player Badges (original badges)
+  const badges = [
+    { id: 1, name: "First Catch", type: "event", image: "" },
+    { id: 2, name: "Ruby Rank Compl...", type: "achievement", image: "" },
+    { id: 3, name: "750 Gems", type: "currency", image: "" },
+    { id: 4, name: "150 Gems", type: "currency", image: "" },
+    { id: 5, name: "30 Gems", type: "currency", image: "" },
+    { id: 6, name: "Welcome!", type: "welcome", image: "" },
+  ];
+
+  // Mock experiences for Creations tab
+  const experiences = [
+    {
+      id: "1",
+      title: "reahan00R's Place",
+      description: "This is your very first AdventureBlox creation. Check it out, then make it your own with AdventureBlox Studio!",
+      imageUrl: "",
+      active: 0,
+      visits: 0,
+    },
+  ];
+
+  // Wearing carousel logic
+  const itemsPerPage = 6;
+  const maxWearingIndex = Math.max(0, currentlyWearing.length - itemsPerPage);
+  const visibleWearingItems = currentlyWearing.slice(currentWearingIndex, currentWearingIndex + itemsPerPage);
+  const showPrevWearing = currentWearingIndex > 0;
+  const showNextWearing = currentWearingIndex < maxWearingIndex;
+
+  const handlePrevWearing = () => {
+    setCurrentWearingIndex((prev) => Math.max(0, prev - itemsPerPage));
+  };
+
+  const handleNextWearing = () => {
+    setCurrentWearingIndex((prev) => Math.min(maxWearingIndex, prev + itemsPerPage));
+  };
+
+  // Bio editing handlers
+  const handleEditBio = () => {
+    setEditedBio(bio);
+    setIsEditingBio(true);
+  };
+
+  const handleCancelBio = () => {
+    setEditedBio(bio);
+    setIsEditingBio(false);
+  };
+
+  const handleSaveBio = () => {
+    setBio(editedBio);
+    setIsEditingBio(false);
+  };
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 flex flex-col">
       {/* Sidebar */}
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-      {/* Top Navigation Bar */}
-      <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50">
-        <div className="flex items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-4">
-            <button onClick={() => setSidebarOpen(true)} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-              <Menu className="w-6 h-6 text-gray-700 dark:text-gray-300" />
-            </button>
-            
-            <Link href="/home" className="flex items-center">
-              <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">◈</span>
-              </div>
-            </Link>
-          </div>
+      {/* Header */}
+      <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} setSidebarOpen={setSidebarOpen} />
 
-          <nav className="hidden md:flex items-center gap-6">
-            <Link href="/games" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-semibold text-sm">
-              Games
-            </Link>
-            <Link href="/catalog" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-semibold text-sm">
-              Catalog
-            </Link>
-            <Link href="/create" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-semibold text-sm">
-              Create
-            </Link>
-            <Link href="/adventurebux" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-semibold text-sm">
-              AdventureBux
-            </Link>
-          </nav>
+       {/* Main Content */}
+       <main className="flex-1">
+         {/* Character Display (Like Roblox) */}
+         <div className="relative bg-gradient-to-b from-gray-100 to-white dark:from-gray-800 dark:to-gray-900 py-8 border-b border-gray-200 dark:border-gray-800">
+           <button className="absolute top-4 right-4 px-4 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg text-sm font-medium text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-700">
+             3D
+           </button>
+           
+           {/* Character container */}
+           <div className="flex justify-center items-end h-48">
+             <div className="relative">
+               {/* Character placeholder - similar to helper app */}
+               <svg width="120" height="180" viewBox="0 0 120 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+                 {/* Head */}
+                 <rect x="35" y="0" width="50" height="50" rx="8" fill="#F5D0C5"/>
+                 {/* Hair */}
+                 <ellipse cx="60" cy="15" rx="30" ry="20" fill="#B85C38"/>
+                 <ellipse cx="60" cy="5" rx="20" ry="12" fill="#B85C38"/>
+                 <circle cx="75" cy="8" r="12" fill="#B85C38"/>
+                 {/* Face */}
+                 <circle cx="48" cy="30" r="3" fill="#393939"/>
+                 <circle cx="72" cy="30" r="3" fill="#393939"/>
+                 <path d="M52 40 Q60 48 68 40" stroke="#393939" strokeWidth="2" fill="none"/>
+                 {/* Torso */}
+                 <rect x="30" y="55" width="60" height="50" rx="4" fill="#4A90A4"/>
+                 {/* Stripes on shirt */}
+                 <rect x="30" y="65" width="60" height="6" fill="#6BA8BC"/>
+                 <rect x="30" y="77" width="60" height="6" fill="#6BA8BC"/>
+                 <rect x="30" y="89" width="60" height="6" fill="#6BA8BC"/>
+                 {/* Arms */}
+                 <rect x="10" y="55" width="18" height="45" rx="4" fill="#F5D0C5"/>
+                 <rect x="92" y="55" width="18" height="45" rx="4" fill="#F5D0C5"/>
+                 {/* Legs */}
+                 <rect x="32" y="108" width="25" height="70" rx="4" fill="#8B4513"/>
+                 <rect x="63" y="108" width="25" height="70" rx="4" fill="#8B4513"/>
+               </svg>
+             </div>
+           </div>
+         </div>
 
-          <div className="flex items-center gap-3">
-            <div className="hidden md:flex items-center gap-2 bg-gray-100 dark:bg-gray-800 rounded-lg px-4 py-2 w-64">
-              <Search className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-transparent text-gray-700 dark:text-gray-300 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-sm focus:outline-none w-full"
-              />
-            </div>
-            
-            <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg relative">
-              <Bell className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-            </button>
-            
-            <ThemeToggle />
-            
-            <div className="flex items-center gap-1 px-3 py-1.5 bg-gray-100 dark:bg-gray-800 rounded-lg">
-              <div className="w-5 h-5 bg-gray-800 dark:bg-gray-200 rounded-full flex items-center justify-center">
-                <span className="text-white dark:text-gray-900 text-xs font-bold">◈</span>
-              </div>
-              <span className="text-gray-900 dark:text-gray-100 font-semibold text-sm">0</span>
-            </div>
-            
-            <div className="relative">
-              <button 
-                onClick={() => setSettingsOpen(!settingsOpen)}
-                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
-              >
-                <SettingsIcon className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-              </button>
-              
-              {settingsOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
-                  <Link 
-                    href="/settings" 
-                    className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                    onClick={() => setSettingsOpen(false)}
-                  >
-                    Settings
-                  </Link>
-                </div>
-              )}
-            </div>
-            
-            <Link href="/profile" className="flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg px-2 py-1">
-              <div className="w-8 h-8 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
-              <span className="text-gray-900 dark:text-gray-100 font-semibold text-sm hidden md:block">reahan00R</span>
-            </Link>
-          </div>
-        </div>
-      </header>
+         {/* Profile Header */}
+         <div className="max-w-[900px] mx-auto px-4">
+           <div className="flex items-start gap-6 py-6 border-b border-gray-200 dark:border-gray-800">
+             {/* Avatar with premium badge */}
+             <div className="relative">
+               <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700">
+                 <div className="w-full h-full bg-gray-300 dark:bg-gray-600"></div>
+               </div>
+               {/* Premium badge */}
+               <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-blue-500 rounded-full flex items-center justify-center border-2 border-white dark:border-gray-900">
+                 <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
+                   <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                 </svg>
+               </div>
+             </div>
 
-      {/* Main Content */}
-      <main className="flex-1">
-        {/* Hero Section with Avatar (Like Cover Photo) */}
-        <div className="border-b border-gray-200 dark:border-gray-800">
-          {/* Avatar Display Area (Like Cover Photo) */}
-          <div className="relative bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800 h-[400px] flex items-end justify-center pb-16">
-            <div className="w-64 h-80 bg-gray-400 dark:bg-gray-600 rounded-lg flex items-center justify-center text-gray-600 dark:text-gray-400 text-lg">
-              3D Avatar Preview
-            </div>
-            <div className="absolute top-4 right-4 bg-white dark:bg-gray-800 px-3 py-1 rounded font-semibold text-sm text-gray-900 dark:text-gray-100">
-              3D
-            </div>
-          </div>
+             {/* User info */}
+             <div className="flex-1">
+               <div className="flex items-center justify-between">
+                 <div>
+                   <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">reahan00R</h1>
+                   <p className="text-sm text-gray-600 dark:text-gray-400">@reahan00R</p>
+                 </div>
+                 
+                 {/* Action Buttons */}
+                 <div className="flex items-center gap-2">
+                   <button className="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100 font-medium rounded-lg text-sm transition-colors">
+                     Edit Profile
+                   </button>
+                   <Link href="/avatar">
+                     <button className="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100 font-medium rounded-lg text-sm transition-colors">
+                       Edit Avatar
+                     </button>
+                   </Link>
+                   
+                   {/* Three dot menu */}
+                   <div className="relative" ref={menuRef}>
+                     <button 
+                       className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+                       onClick={() => setShowProfileMenu(!showProfileMenu)}
+                     >
+                       <MoreHorizontal className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                     </button>
+                     
+                     {showProfileMenu && (
+                       <div className="absolute right-0 top-full mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-1 min-w-[140px] z-50">
+                         <button 
+                           className="w-full px-4 py-2 text-left text-sm text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700"
+                           onClick={() => setShowProfileMenu(false)}
+                         >
+                           Inventory
+                         </button>
+                         <button 
+                           className="w-full px-4 py-2 text-left text-sm text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700"
+                           onClick={() => setShowProfileMenu(false)}
+                         >
+                           Favorites
+                         </button>
+                       </div>
+                     )}
+                   </div>
+                 </div>
+               </div>
 
-          {/* Profile Info Section (At Bottom of Avatar Area) */}
-          <div className="bg-white dark:bg-gray-900">
-            <div className="max-w-6xl mx-auto px-4">
-              {/* Profile Picture and Name */}
-              <div className="flex items-start justify-between -mt-16 pb-6">
-                <div className="flex items-end gap-4">
-                  <div className="w-32 h-32 bg-gray-300 dark:bg-gray-600 rounded-full border-4 border-white dark:border-gray-900"></div>
-                  <div className="pb-2">
-                    <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">reahan00R</h1>
-                    <p className="text-gray-600 dark:text-gray-400">@reahan00R</p>
-                  </div>
-                </div>
-                
-                <div className="flex gap-2 pt-6">
-                  <button className="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100 font-semibold rounded transition-colors">
-                    Edit Profile
-                  </button>
-                  <Link href="/avatar">
-                    <button className="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100 font-semibold rounded transition-colors">
-                      Edit Avatar
-                    </button>
-                  </Link>
-                  <button className="p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded">
-                    <MoreHorizontal className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                  </button>
-                </div>
-              </div>
+               {/* Stats */}
+               <div className="flex items-center gap-6 mt-3">
+                 <Link href="/connect" className="flex items-center gap-1 hover:underline">
+                   <span className="font-bold text-gray-900 dark:text-gray-100">7</span>
+                   <span className="text-gray-600 dark:text-gray-400 text-sm">Connections</span>
+                 </Link>
+                 <Link href="/connect" className="flex items-center gap-1 hover:underline">
+                   <span className="font-bold text-gray-900 dark:text-gray-100">1</span>
+                   <span className="text-gray-600 dark:text-gray-400 text-sm">Follower</span>
+                 </Link>
+                 <Link href="/connect" className="flex items-center gap-1 hover:underline">
+                   <span className="font-bold text-gray-900 dark:text-gray-100">1</span>
+                   <span className="text-gray-600 dark:text-gray-400 text-sm">Following</span>
+                 </Link>
+               </div>
+             </div>
+           </div>
 
-              {/* Stats */}
-              <div className="flex gap-4 mb-4">
-                <Link href="/connect" className="px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                  <span className="font-semibold text-gray-900 dark:text-gray-100">7 Connections</span>
-                </Link>
-                <Link href="/connect" className="px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                  <span className="font-semibold text-gray-900 dark:text-gray-100">1 Follower</span>
-                </Link>
-                <Link href="/connect" className="px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                  <span className="font-semibold text-gray-900 dark:text-gray-100">1 Following</span>
-                </Link>
-              </div>
+           {/* Tabs */}
+           <div className="border-b border-gray-200 dark:border-gray-800">
+             <div className="flex">
+               {tabs.map((tab) => (
+                 <button
+                   key={tab}
+                   onClick={() => setActiveTab(tab)}
+                   className={`flex-1 py-4 text-sm font-medium border-b-2 transition-colors ${
+                     activeTab === tab
+                       ? "border-gray-900 dark:border-gray-100 text-gray-900 dark:text-gray-100"
+                       : "border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
+                   }`}
+                 >
+                   {tab}
+                 </button>
+               ))}
+             </div>
+           </div>
 
-              {/* Bio */}
-              <div className="text-gray-700 dark:text-gray-300 mb-4 pb-4">
-                <p className="text-sm">No bio yet</p>
-                <button className="text-sm text-gray-600 dark:text-gray-400 hover:underline">more</button>
-              </div>
-            </div>
-          </div>
-        </div>
+           {/* Tab Content */}
+           {activeTab === "About" ? (
+             <div>
+               {/* About Section with Bio */}
+               <div className="py-6 border-b border-gray-200 dark:border-gray-800">
+                 <div className="flex items-center justify-between mb-4">
+                   <div className="flex items-center gap-2">
+                     <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">About</h2>
+                     {!isEditingBio && (
+                       <button 
+                         onClick={handleEditBio}
+                         className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded"
+                       >
+                         <ExternalLink className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                       </button>
+                     )}
+                   </div>
+                   
+                   {/* Social Links */}
+                   <div className="flex items-center gap-3">
+                     <a 
+                       href="#"
+                       className="hover:opacity-80 transition-opacity"
+                     >
+                       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="#FF0000">
+                         <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                       </svg>
+                     </a>
+                   </div>
+                 </div>
 
-        {/* Tabs */}
-        <div className="border-b border-gray-200 dark:border-gray-800 sticky top-[57px] bg-white dark:bg-gray-900 z-40">
-          <div className="max-w-6xl mx-auto px-4">
-            <div className="flex gap-8">
-              {tabs.map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`pb-3 text-base font-semibold transition-colors relative ${
-                    activeTab === tab
-                      ? "text-gray-900 dark:text-gray-100"
-                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
-                  }`}
-                >
-                  {tab}
-                  {activeTab === tab && (
-                    <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gray-900 dark:bg-gray-100" />
-                  )}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
+                 {/* Bio editing area */}
+                 {isEditingBio ? (
+                   <div>
+                     <textarea
+                       value={editedBio}
+                       onChange={(e) => setEditedBio(e.target.value.slice(0, 1000))}
+                       placeholder="Tell the AdventureBlox community about what you like to make, build, and explore..."
+                       className="w-full h-24 p-3 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 resize-none focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-gray-600"
+                     />
+                     <div className="flex items-center justify-between mt-2">
+                       <p className="text-xs text-gray-600 dark:text-gray-400">
+                         Keep yourself safe, do not share personal details online.
+                       </p>
+                       <p className="text-xs text-gray-600 dark:text-gray-400">
+                         {editedBio.length}/1000
+                       </p>
+                     </div>
+                     <div className="flex justify-end gap-3 mt-4">
+                       <button
+                         onClick={handleCancelBio}
+                         className="px-6 py-2 text-sm font-medium text-gray-900 dark:text-gray-100 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-700"
+                       >
+                         Cancel
+                       </button>
+                       <button
+                         onClick={handleSaveBio}
+                         className="px-6 py-2 text-sm font-medium text-gray-900 dark:text-gray-100 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-700"
+                       >
+                         Save
+                       </button>
+                     </div>
+                   </div>
+                 ) : (
+                   bio ? <p className="text-sm text-gray-900 dark:text-gray-100">{bio}</p> : <p className="text-sm text-gray-600 dark:text-gray-400">No bio yet</p>
+                 )}
+               </div>
 
-        {/* Content Sections */}
-        <div className="max-w-6xl mx-auto px-4 py-8">
-          {activeTab === "About" && (
-            <div className="space-y-12">
-              {/* Currently Wearing */}
-              <section>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Currently Wearing</h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                  {currentlyWearing.map((item) => (
-                    <div key={item.id} className="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
-                      <div className="aspect-square bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                        <div className="w-16 h-16 bg-gray-300 dark:bg-gray-600 rounded"></div>
-                      </div>
-                      <div className="p-2">
-                        <p className="text-xs font-semibold text-gray-900 dark:text-gray-100 truncate">{item.name}</p>
-                        {item.price && <p className="text-xs text-gray-600 dark:text-gray-400">{item.price}</p>}
-                      </div>
-                    </div>
-                  ))}
-                  <button className="aspect-square bg-gray-100 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 flex items-center justify-center transition-colors">
-                    <ChevronRight className="w-8 h-8 text-gray-600 dark:text-gray-400" />
-                  </button>
-                </div>
-              </section>
+               {/* Currently Wearing with Carousel */}
+               <div className="py-6 border-b border-gray-200 dark:border-gray-800">
+                 <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">Currently Wearing</h2>
+                 
+                 <div className="relative flex items-center">
+                   {/* Left Arrow */}
+                   {showPrevWearing && (
+                     <button
+                       onClick={handlePrevWearing}
+                       className="absolute -left-4 z-10 w-8 h-8 flex items-center justify-center bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full shadow-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+                     >
+                       <ChevronLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                     </button>
+                   )}
 
-              {/* Favorites */}
-              <section>
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Favorites</h2>
-                  <Link href="#" className="text-sm text-gray-600 dark:text-gray-400 hover:underline flex items-center gap-1">
-                    Favorites <ChevronRight className="w-4 h-4" />
-                  </Link>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  {favorites.map((game) => (
-                    <div key={game.id} className="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
-                      <div className="aspect-video bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
-                        <span className="text-white font-bold">Game Thumbnail</span>
-                      </div>
-                      <div className="p-3">
-                        <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-2">{game.name}</h3>
-                        <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
-                          <span className="flex items-center gap-1">👍 {game.rating}</span>
-                          <span className="flex items-center gap-1">👥 {game.plays}</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </section>
+                   {/* Items container */}
+                   <div className="flex gap-4 overflow-hidden w-full">
+                     {visibleWearingItems.map((item) => (
+                       <div key={item.id} className="flex-shrink-0 w-[140px] cursor-pointer group">
+                         <div className="w-full aspect-square bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 group-hover:border-gray-400 dark:group-hover:border-gray-500 transition-colors">
+                           <div className="w-full h-full flex items-center justify-center">
+                             <div className="w-16 h-16 bg-gray-300 dark:bg-gray-600 rounded"></div>
+                           </div>
+                         </div>
+                         <p className="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{item.name}</p>
+                         {item.price && (
+                           <p className="text-sm text-green-600 dark:text-green-400">{item.price}</p>
+                         )}
+                       </div>
+                     ))}
+                   </div>
+
+                   {/* Right Arrow */}
+                   {showNextWearing && (
+                     <button
+                       onClick={handleNextWearing}
+                       className="absolute -right-4 z-10 w-8 h-8 flex items-center justify-center bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full shadow-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+                     >
+                       <ChevronRight className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                     </button>
+                   )}
+                 </div>
+               </div>
 
               {/* Connections */}
-              <section>
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Connections (7)</h2>
-                  <Link href="/connect" className="text-sm text-gray-600 dark:text-gray-400 hover:underline flex items-center gap-1">
-                    See All <ChevronRight className="w-4 h-4" />
+              <div className="py-6 border-b border-gray-200 dark:border-gray-800">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">Connections (7)</h2>
+                  <Link href="/connect" className="flex items-center gap-1 text-sm text-gray-900 dark:text-gray-100 hover:underline">
+                    See All
+                    <ChevronRight className="w-4 h-4" />
                   </Link>
                 </div>
-                <div className="flex gap-4 overflow-x-auto pb-2">
+
+                <div className="flex gap-6">
                   {connections.map((connection) => (
-                    <Link key={connection.id} href={`/profile/${connection.username}`} className="flex-shrink-0">
-                      <div className="flex flex-col items-center gap-2 w-24">
-                        <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700">
+                    <Link key={connection.id} href={`/profile/${connection.username}`} className="flex flex-col items-center cursor-pointer group">
+                      <div className="relative">
+                        <div className="w-16 h-16 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 group-hover:border-gray-400 dark:group-hover:border-gray-500 transition-colors">
                           <img src={connection.avatar} alt={connection.name} className="w-full h-full object-cover" />
                         </div>
-                        <div className="text-center">
-                          <p className="text-xs font-semibold text-gray-900 dark:text-gray-100 truncate w-full">{connection.name}</p>
-                        </div>
                       </div>
+                      <p className="mt-2 text-xs text-gray-900 dark:text-gray-100">{connection.name}</p>
                     </Link>
                   ))}
                 </div>
-              </section>
+              </div>
 
-              {/* Badges */}
-              <section>
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Badges</h2>
-                  <Link href="#" className="text-sm text-gray-600 dark:text-gray-400 hover:underline flex items-center gap-1">
-                    See All <ChevronRight className="w-4 h-4" />
-                  </Link>
+              {/* Groups */}
+              <div className="py-6 border-b border-gray-200 dark:border-gray-800">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">Groups</h2>
+                  <div className="flex items-center gap-2">
+                    {/* View mode toggle */}
+                    <button
+                      onClick={() => setGroupsViewMode("carousel")}
+                      className={`p-1.5 rounded ${groupsViewMode === "carousel" ? "bg-gray-200 dark:bg-gray-700" : "hover:bg-gray-100 dark:hover:bg-gray-800"}`}
+                    >
+                      <ChevronRight className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                    </button>
+                    <button
+                      onClick={() => setGroupsViewMode("grid")}
+                      className={`p-1.5 rounded ${groupsViewMode === "grid" ? "bg-gray-200 dark:bg-gray-700" : "hover:bg-gray-100 dark:hover:bg-gray-800"}`}
+                    >
+                      <LayoutGrid className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                    </button>
+                  </div>
                 </div>
-                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
-                  {badges.map((badge) => (
-                    <div key={badge.id} className="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
-                      <div className="aspect-square bg-gradient-to-br from-purple-400 to-blue-500 flex items-center justify-center">
-                        <div className="w-16 h-16 bg-white/20 rounded-full"></div>
-                      </div>
-                      <div className="p-2">
-                        <p className="text-xs font-semibold text-gray-900 dark:text-gray-100 truncate text-center">{badge.name}</p>
-                      </div>
+
+                {/* Carousel View */}
+                {groupsViewMode === "carousel" && (
+                  <div className="relative">
+                    {/* Left Arrow */}
+                    {showPrevGroup && (
+                      <button
+                        onClick={handlePrevGroup}
+                        className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors shadow-md"
+                      >
+                        <ChevronLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                      </button>
+                    )}
+
+                    {/* Group Card */}
+                    <div className="max-w-[600px] mx-auto">
+                      {visibleGroups.map((group) => (
+                        <Link key={group.id} href={`/groups/${group.id}`} className="block">
+                          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:border-gray-400 dark:hover:border-gray-500 transition-colors">
+                            <div className="flex items-start gap-4">
+                              <div className="w-24 h-24 rounded overflow-hidden bg-gray-100 dark:bg-gray-700 flex-shrink-0">
+                                <img src={group.image} alt={group.name} className="w-full h-full object-cover" />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-start justify-between">
+                                  <div>
+                                    <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                                      {group.name}
+                                      {group.verified && (
+                                        <svg className="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                          <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                        </svg>
+                                      )}
+                                    </h3>
+                                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                                      {group.members} Members
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="flex items-center gap-2 mt-3">
+                                  <span className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300">
+                                    👑 {group.rank}
+                                  </span>
+                                </div>
+                                <p className="text-sm text-gray-600 dark:text-gray-400 mt-2 line-clamp-2">
+                                  😊 Welcome to our group!
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </Link>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </section>
-            </div>
-          )}
 
-          {activeTab === "Creations" && (
-            <div className="text-center py-12 text-gray-600 dark:text-gray-400">
-              <p>No creations yet</p>
-            </div>
-          )}
-        </div>
-      </main>
+                    {/* Right Arrow */}
+                    {showNextGroup && (
+                      <button
+                        onClick={handleNextGroup}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors shadow-md"
+                      >
+                        <ChevronRight className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                      </button>
+                    )}
+                  </div>
+                )}
+
+                {/* Grid View */}
+                {groupsViewMode === "grid" && (
+                  <div className="grid grid-cols-2 gap-4">
+                    {groups.map((group) => (
+                      <Link key={group.id} href={`/groups/${group.id}`} className="block">
+                        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden hover:border-gray-400 dark:hover:border-gray-500 transition-colors">
+                          <div className="aspect-[16/9] bg-gray-100 dark:bg-gray-700 overflow-hidden">
+                            <img src={group.image} alt={group.name} className="w-full h-full object-cover" />
+                          </div>
+                          <div className="p-3">
+                            <h3 className="text-sm font-bold text-gray-900 dark:text-gray-100 flex items-center gap-1 truncate">
+                              {group.name}
+                              {group.verified && (
+                                <svg className="w-3 h-3 text-blue-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                </svg>
+                              )}
+                            </h3>
+                            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">{group.members} Members</p>
+                            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">👑 {group.rank}</p>
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Favorites */}
+               <div className="py-6 border-b border-gray-200 dark:border-gray-800">
+                 <div className="flex items-center justify-between mb-4">
+                   <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">Favorites</h2>
+                   <button className="flex items-center gap-1 text-sm text-gray-900 dark:text-gray-100 hover:underline">
+                     Favorites
+                     <ChevronRight className="w-4 h-4" />
+                   </button>
+                 </div>
+
+                 <div className="flex gap-4">
+                   {favorites.map((game) => (
+                     <div key={game.id} className="w-[200px] cursor-pointer group">
+                       <div className="w-full aspect-[4/3] rounded-lg overflow-hidden bg-gradient-to-br from-blue-400 to-blue-600 border border-gray-200 dark:border-gray-700 group-hover:border-gray-400 dark:group-hover:border-gray-500 transition-colors flex items-center justify-center">
+                         <span className="text-white font-bold text-sm">Game Thumbnail</span>
+                       </div>
+                       <h3 className="mt-2 text-sm font-bold text-gray-900 dark:text-gray-100 line-clamp-2">{game.name}</h3>
+                       <div className="flex items-center gap-4 mt-1 text-xs text-gray-600 dark:text-gray-400">
+                         <div className="flex items-center gap-1">
+                           <ThumbsUp className="w-3 h-3" />
+                           <span>{game.rating}</span>
+                         </div>
+                         <div className="flex items-center gap-1">
+                           <Users className="w-3 h-3" />
+                           <span>{game.plays}</span>
+                         </div>
+                       </div>
+                     </div>
+                   ))}
+                 </div>
+               </div>
+
+               {/* Roblox Badges */}
+               <div className="py-6 border-b border-gray-200 dark:border-gray-800">
+                 <div className="flex items-center justify-between mb-4">
+                   <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">AdventureBlox Badges</h2>
+                   <button className="flex items-center gap-1 text-sm text-gray-900 dark:text-gray-100 hover:underline">
+                     See All
+                     <ChevronRight className="w-4 h-4" />
+                   </button>
+                 </div>
+                 <div className="flex gap-4">
+                   {robloxBadges.map((badge) => (
+                     <div key={badge.id} className="cursor-pointer group">
+                       <div className="w-[120px] aspect-square rounded-lg overflow-hidden bg-gradient-to-b from-blue-500 to-blue-600 border border-gray-200 dark:border-gray-700 group-hover:border-gray-400 dark:group-hover:border-gray-500 transition-colors flex items-center justify-center">
+                         <div className="text-center text-white">
+                           <div className="text-2xl font-bold">1 YR+</div>
+                           <svg className="w-10 h-10 mx-auto mt-1" viewBox="0 0 40 40" fill="none">
+                             <circle cx="20" cy="20" r="16" fill="#1a73e8" stroke="white" strokeWidth="2"/>
+                             <path d="M20 8 L20 32 M8 20 L32 20" stroke="white" strokeWidth="3"/>
+                           </svg>
+                         </div>
+                       </div>
+                       <p className="mt-2 text-sm text-gray-900 dark:text-gray-100 text-center">{badge.name}</p>
+                     </div>
+                   ))}
+                 </div>
+               </div>
+
+               {/* Badges */}
+               <div className="py-6 border-b border-gray-200 dark:border-gray-800">
+                 <div className="flex items-center justify-between mb-4">
+                   <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">Badges</h2>
+                   <button className="flex items-center gap-1 text-sm text-gray-900 dark:text-gray-100 hover:underline">
+                     See All
+                     <ChevronRight className="w-4 h-4" />
+                   </button>
+                 </div>
+                 <div className="flex gap-4">
+                   {badges.map((badge) => (
+                     <div key={badge.id} className="cursor-pointer group">
+                       <div className="w-[120px] aspect-square rounded-lg overflow-hidden bg-gradient-to-br from-purple-400 to-blue-500 border border-gray-200 dark:border-gray-700 group-hover:border-gray-400 dark:group-hover:border-gray-500 transition-colors flex items-center justify-center">
+                         <div className="w-12 h-12 bg-white/20 rounded-full"></div>
+                       </div>
+                       <p className="mt-2 text-xs text-gray-900 dark:text-gray-100 text-center truncate">{badge.name}</p>
+                     </div>
+                   ))}
+                 </div>
+               </div>
+
+               {/* Statistics */}
+               <div className="py-6">
+                 <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-6">Statistics</h2>
+                 <div className="flex gap-24">
+                   <div className="text-center">
+                     <p className="text-sm text-gray-600 dark:text-gray-400">Join Date</p>
+                     <p className="text-lg font-bold text-gray-900 dark:text-gray-100 mt-1">07/12/2024</p>
+                   </div>
+                   <div className="text-center">
+                     <p className="text-sm text-gray-600 dark:text-gray-400">Place Visits</p>
+                     <p className="text-lg font-bold text-gray-900 dark:text-gray-100 mt-1">0</p>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           ) : (
+             <div className="py-6">
+               <div className="flex items-center justify-between mb-6">
+                 <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">Experiences</h2>
+                 <div className="flex border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                   <button
+                     onClick={() => setViewMode("list")}
+                     className={`p-2 ${viewMode === "list" ? "bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800"}`}
+                   >
+                     <Monitor className="w-4 h-4 text-gray-900 dark:text-gray-100" />
+                   </button>
+                   <button
+                     onClick={() => setViewMode("grid")}
+                     className={`p-2 ${viewMode === "grid" ? "bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800"}`}
+                   >
+                     <LayoutGrid className="w-4 h-4 text-gray-900 dark:text-gray-100" />
+                   </button>
+                 </div>
+               </div>
+
+               {viewMode === "list" ? (
+                 <div className="space-y-6">
+                   {experiences.map((exp) => (
+                     <div key={exp.id} className="flex gap-6 p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-gray-400 dark:hover:border-gray-500 transition-colors cursor-pointer">
+                       <div className="w-[280px] h-[180px] flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800">
+                         <div className="w-full h-full bg-gradient-to-b from-blue-200 to-green-200 dark:from-blue-900 dark:to-green-900 flex items-center justify-center">
+                           <span className="text-2xl font-bold text-gray-700 dark:text-gray-300">ADVENTUREBLOX</span>
+                         </div>
+                       </div>
+                       <div className="flex-1 py-2">
+                         <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">{exp.title}</h3>
+                         <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">{exp.description}</p>
+                         <div className="flex gap-12 mt-8">
+                           <div>
+                             <p className="text-sm text-gray-600 dark:text-gray-400">Active</p>
+                             <p className="text-lg font-bold text-gray-900 dark:text-gray-100">{exp.active}</p>
+                           </div>
+                           <div>
+                             <p className="text-sm text-gray-600 dark:text-gray-400">Visits</p>
+                             <p className="text-lg font-bold text-gray-900 dark:text-gray-100">{exp.visits}</p>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   ))}
+                 </div>
+               ) : (
+                 <div className="grid grid-cols-3 gap-4">
+                   {experiences.map((exp) => (
+                     <div key={exp.id} className="cursor-pointer group">
+                       <div className="aspect-[4/3] rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 group-hover:border-gray-400 dark:group-hover:border-gray-500 transition-colors">
+                         <div className="w-full h-full bg-gradient-to-b from-blue-200 to-green-200 dark:from-blue-900 dark:to-green-900 flex items-center justify-center">
+                           <span className="text-xl font-bold text-gray-700 dark:text-gray-300">ADVENTUREBLOX</span>
+                         </div>
+                       </div>
+                       <h3 className="mt-2 text-sm font-bold text-gray-900 dark:text-gray-100">{exp.title}</h3>
+                     </div>
+                   ))}
+                 </div>
+               )}
+             </div>
+           )}
+         </div>
+       </main>
 
       {/* Footer */}
       <Footer />
