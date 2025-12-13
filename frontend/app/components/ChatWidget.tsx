@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { MessageSquare, X, Settings, Minimize2, Send } from "lucide-react";
 
-interface Connection {
+interface Friend {
   id: number;
   name: string;
   avatar: string;
@@ -25,7 +25,7 @@ export default function ChatWidget() {
   const [openChats, setOpenChats] = useState<ChatWindow[]>([]);
   const [messageInputs, setMessageInputs] = useState<{ [key: number]: string }>({});
 
-  const connections: Connection[] = [
+  const friends: Friend[] = [
     { id: 1, name: "intann_bil", avatar: "https://robohash.org/intann?set=set3", lastMessage: "Hey!", lastMessageTime: "Yesterday", online: true },
     { id: 2, name: "reahan007", avatar: "https://robohash.org/reahan007?set=set3", lastMessage: "Thanks", lastMessageTime: "Yesterday", online: true },
     { id: 3, name: "pcobilaa", avatar: "https://robohash.org/pcobilaa?set=set3", lastMessageTime: "Jul 1", online: false },
@@ -35,13 +35,13 @@ export default function ChatWidget() {
     { id: 7, name: "JayJayElmi", avatar: "https://robohash.org/jayjay?set=set3", lastMessageTime: "Jun 5", online: false },
   ];
 
-  const openChatWindow = (connection: Connection) => {
-    if (!openChats.find(chat => chat.id === connection.id)) {
+  const openChatWindow = (friend: Friend) => {
+    if (!openChats.find(chat => chat.id === friend.id)) {
       const newChat: ChatWindow = {
-        id: connection.id,
-        name: connection.name,
-        avatar: connection.avatar,
-        username: `@${connection.name}`,
+        id: friend.id,
+        name: friend.name,
+        avatar: friend.avatar,
+        username: `@${friend.name}`,
       };
       setOpenChats([...openChats, newChat]);
     }
@@ -86,7 +86,7 @@ export default function ChatWidget() {
             <div className="relative">
               <input
                 type="text"
-                placeholder="Search for Connections"
+                placeholder="Search for Friends"
                 className="w-full bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded px-3 py-2 pl-8 text-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
               />
               <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20">
@@ -95,40 +95,40 @@ export default function ChatWidget() {
             </div>
           </div>
 
-          {/* Connections List */}
+          {/* Friends List */}
           <div className="flex-1 overflow-y-auto">
-            {connections.map((connection) => (
+            {friends.map((friend) => (
               <button
-                key={connection.id}
-                onClick={() => openChatWindow(connection)}
+                key={friend.id}
+                onClick={() => openChatWindow(friend)}
                 className="w-full flex items-center gap-3 p-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border-b border-gray-100 dark:border-gray-700"
               >
                 <div className="relative flex-shrink-0">
                   <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-600">
                     <Image
-                      src={connection.avatar}
-                      alt={connection.name}
+                      src={friend.avatar}
+                      alt={friend.name}
                       width={40}
                       height={40}
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  {connection.online && (
+                  {friend.online && (
                     <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-800"></div>
                   )}
                 </div>
                 <div className="flex-1 text-left min-w-0">
                   <div className="flex items-center justify-between">
                     <p className="font-semibold text-sm text-gray-900 dark:text-gray-100 truncate">
-                      {connection.name}
+                      {friend.name}
                     </p>
                     <span className="text-xs text-gray-500 dark:text-gray-400 ml-2 flex-shrink-0">
-                      {connection.lastMessageTime}
+                      {friend.lastMessageTime}
                     </span>
                   </div>
-                  {connection.lastMessage && (
+                  {friend.lastMessage && (
                     <p className="text-xs text-gray-600 dark:text-gray-400 truncate">
-                      {connection.lastMessage}
+                      {friend.lastMessage}
                     </p>
                   )}
                 </div>

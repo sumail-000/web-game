@@ -28,7 +28,7 @@ const ConfigureGroupPage = () => {
     { name: "Payouts", hasNew: false },
     { name: "Members", hasNew: false },
     { name: "Roles", hasNew: false },
-    { name: "Alliance", hasNew: false },
+    { name: "Alliances", hasNew: false },
     { name: "Announcements", hasNew: false },
     { name: "Wall", hasNew: false },
     { name: "Analytics", hasNew: false },
@@ -145,7 +145,7 @@ const ConfigureGroupPage = () => {
 
       {/* Main Content */}
       <main className="flex-1">
-        <div className="max-w-7xl mx-auto px-4 py-6">
+        <div className="w-full px-4 py-6">
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -564,9 +564,9 @@ const ConfigureGroupPage = () => {
                   </div>
                 )}
 
-                {activeSection === "Alliance" && (
+                {activeSection === "Alliances" && (
                   <div className="space-y-6">
-                    <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Alliance Management</h2>
+                    <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Alliances Management</h2>
                     
                     <div className="flex gap-3">
                       <input

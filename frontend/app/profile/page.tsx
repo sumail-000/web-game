@@ -13,6 +13,7 @@ const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("About");
   const [currentWearingIndex, setCurrentWearingIndex] = useState(0);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [avatarViewMode, setAvatarViewMode] = useState<"2D" | "3D">("3D");
   const [bio, setBio] = useState("");
   const [isEditingBio, setIsEditingBio] = useState(false);
   const [editedBio, setEditedBio] = useState("");
@@ -56,7 +57,7 @@ const ProfilePage = () => {
     { id: 2, name: "Teamwork Puzzles 2 (Obby)", rating: "92%", plays: "3.3K", image: "" },
   ];
 
-  const connections = [
+  const friends = [
     { id: 1, name: "nass4", username: "@nass4", avatar: "https://robohash.org/nass4?set=set3" },
     { id: 2, name: "pcobilaa", username: "@pcobilaa", avatar: "https://robohash.org/pcobilaa?set=set3" },
     { id: 3, name: "JayJayElmi", username: "@JayJayElmi", avatar: "https://robohash.org/jayjay?set=set3" },
@@ -117,8 +118,8 @@ const ProfilePage = () => {
     },
   ];
 
-  // Wearing carousel logic
-  const itemsPerPage = 6;
+  // Wearing grid pagination logic (4x2 = 8 items per page)
+  const itemsPerPage = 8;
   const maxWearingIndex = Math.max(0, currentlyWearing.length - itemsPerPage);
   const visibleWearingItems = currentlyWearing.slice(currentWearingIndex, currentWearingIndex + itemsPerPage);
   const showPrevWearing = currentWearingIndex > 0;
@@ -158,44 +159,6 @@ const ProfilePage = () => {
 
        {/* Main Content */}
        <main className="flex-1">
-         {/* Character Display (Like Roblox) */}
-         <div className="relative bg-gradient-to-b from-gray-100 to-white dark:from-gray-800 dark:to-gray-900 py-8 border-b border-gray-200 dark:border-gray-800">
-           <button className="absolute top-4 right-4 px-4 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg text-sm font-medium text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-700">
-             3D
-           </button>
-           
-           {/* Character container */}
-           <div className="flex justify-center items-end h-48">
-             <div className="relative">
-               {/* Character placeholder - similar to helper app */}
-               <svg width="120" height="180" viewBox="0 0 120 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-                 {/* Head */}
-                 <rect x="35" y="0" width="50" height="50" rx="8" fill="#F5D0C5"/>
-                 {/* Hair */}
-                 <ellipse cx="60" cy="15" rx="30" ry="20" fill="#B85C38"/>
-                 <ellipse cx="60" cy="5" rx="20" ry="12" fill="#B85C38"/>
-                 <circle cx="75" cy="8" r="12" fill="#B85C38"/>
-                 {/* Face */}
-                 <circle cx="48" cy="30" r="3" fill="#393939"/>
-                 <circle cx="72" cy="30" r="3" fill="#393939"/>
-                 <path d="M52 40 Q60 48 68 40" stroke="#393939" strokeWidth="2" fill="none"/>
-                 {/* Torso */}
-                 <rect x="30" y="55" width="60" height="50" rx="4" fill="#4A90A4"/>
-                 {/* Stripes on shirt */}
-                 <rect x="30" y="65" width="60" height="6" fill="#6BA8BC"/>
-                 <rect x="30" y="77" width="60" height="6" fill="#6BA8BC"/>
-                 <rect x="30" y="89" width="60" height="6" fill="#6BA8BC"/>
-                 {/* Arms */}
-                 <rect x="10" y="55" width="18" height="45" rx="4" fill="#F5D0C5"/>
-                 <rect x="92" y="55" width="18" height="45" rx="4" fill="#F5D0C5"/>
-                 {/* Legs */}
-                 <rect x="32" y="108" width="25" height="70" rx="4" fill="#8B4513"/>
-                 <rect x="63" y="108" width="25" height="70" rx="4" fill="#8B4513"/>
-               </svg>
-             </div>
-           </div>
-         </div>
-
          {/* Profile Header */}
          <div className="max-w-[900px] mx-auto px-4">
            <div className="flex items-start gap-6 py-6 border-b border-gray-200 dark:border-gray-800">
@@ -271,7 +234,7 @@ const ProfilePage = () => {
                <div className="flex items-center gap-6 mt-3">
                  <Link href="/connect" className="flex items-center gap-1 hover:underline">
                    <span className="font-bold text-gray-900 dark:text-gray-100">7</span>
-                   <span className="text-gray-600 dark:text-gray-400 text-sm">Connections</span>
+                   <span className="text-gray-600 dark:text-gray-400 text-sm">Friends</span>
                  </Link>
                  <Link href="/connect" className="flex items-center gap-1 hover:underline">
                    <span className="font-bold text-gray-900 dark:text-gray-100">1</span>
@@ -372,54 +335,96 @@ const ProfilePage = () => {
                  )}
                </div>
 
-               {/* Currently Wearing with Carousel */}
-               <div className="py-6 border-b border-gray-200 dark:border-gray-800">
-                 <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">Currently Wearing</h2>
-                 
-                 <div className="relative flex items-center">
-                   {/* Left Arrow */}
-                   {showPrevWearing && (
-                     <button
-                       onClick={handlePrevWearing}
-                       className="absolute -left-4 z-10 w-8 h-8 flex items-center justify-center bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full shadow-sm hover:bg-gray-100 dark:hover:bg-gray-700"
-                     >
-                       <ChevronLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                     </button>
-                   )}
+              {/* Currently Wearing - Merged with Avatar Display */}
+              <div className="py-6 border-b border-gray-200 dark:border-gray-800">
+                <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">Currently Wearing</h2>
+                
+                <div className="flex gap-6">
+                  {/* Left Side - Avatar Display with 2D/3D Toggle */}
+                  <div className="flex-shrink-0">
+                    <div className="relative bg-gradient-to-b from-gray-100 to-white dark:from-gray-800 dark:to-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-4 w-80">
+                      {/* 2D/3D Toggle Button (Single Button) */}
+                      <div className="absolute top-3 right-3">
+                        <button
+                          onClick={() => setAvatarViewMode(avatarViewMode === "3D" ? "2D" : "3D")}
+                          className="px-3 py-1.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100 rounded-lg text-xs font-medium transition-colors border border-gray-300 dark:border-gray-600"
+                        >
+                          {avatarViewMode}
+                        </button>
+                      </div>
 
-                   {/* Items container */}
-                   <div className="flex gap-4 overflow-hidden w-full">
-                     {visibleWearingItems.map((item) => (
-                       <div key={item.id} className="flex-shrink-0 w-[140px] cursor-pointer group">
-                         <div className="w-full aspect-square bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 group-hover:border-gray-400 dark:group-hover:border-gray-500 transition-colors">
-                           <div className="w-full h-full flex items-center justify-center">
-                             <div className="w-16 h-16 bg-gray-300 dark:bg-gray-600 rounded"></div>
-                           </div>
-                         </div>
-                         <p className="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{item.name}</p>
-                         {item.price && (
-                           <p className="text-sm text-green-600 dark:text-green-400">{item.price}</p>
-                         )}
-                       </div>
-                     ))}
-                   </div>
+                      {/* Character Display */}
+                      <div className="flex justify-center items-end h-48 mt-6">
+                        <div className="relative">
+                          {/* Character placeholder */}
+                          <svg width="100" height="150" viewBox="0 0 120 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            {/* Head */}
+                            <rect x="35" y="0" width="50" height="50" rx="8" fill="#F5D0C5"/>
+                            {/* Hair */}
+                            <ellipse cx="60" cy="15" rx="30" ry="20" fill="#B85C38"/>
+                            <ellipse cx="60" cy="5" rx="20" ry="12" fill="#B85C38"/>
+                            <circle cx="75" cy="8" r="12" fill="#B85C38"/>
+                            {/* Face */}
+                            <circle cx="48" cy="30" r="3" fill="#393939"/>
+                            <circle cx="72" cy="30" r="3" fill="#393939"/>
+                            <path d="M52 40 Q60 48 68 40" stroke="#393939" strokeWidth="2" fill="none"/>
+                            {/* Torso */}
+                            <rect x="30" y="55" width="60" height="50" rx="4" fill="#4A90A4"/>
+                            {/* Stripes on shirt */}
+                            <rect x="30" y="65" width="60" height="6" fill="#6BA8BC"/>
+                            <rect x="30" y="77" width="60" height="6" fill="#6BA8BC"/>
+                            <rect x="30" y="89" width="60" height="6" fill="#6BA8BC"/>
+                            {/* Arms */}
+                            <rect x="10" y="55" width="18" height="45" rx="4" fill="#F5D0C5"/>
+                            <rect x="92" y="55" width="18" height="45" rx="4" fill="#F5D0C5"/>
+                            {/* Legs */}
+                            <rect x="32" y="108" width="25" height="70" rx="4" fill="#8B4513"/>
+                            <rect x="63" y="108" width="25" height="70" rx="4" fill="#8B4513"/>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-                   {/* Right Arrow */}
-                   {showNextWearing && (
-                     <button
-                       onClick={handleNextWearing}
-                       className="absolute -right-4 z-10 w-8 h-8 flex items-center justify-center bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full shadow-sm hover:bg-gray-100 dark:hover:bg-gray-700"
-                     >
-                       <ChevronRight className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                     </button>
-                   )}
-                 </div>
-               </div>
+                  {/* Right Side - Items Grid with Pagination */}
+                  <div className="flex-1">
+                    <div className="relative">
+                      {/* Items Grid (4x2 = 8 items) */}
+                      <div className="grid grid-cols-4 gap-2">
+                        {visibleWearingItems.map((item) => (
+                          <div key={item.id} className="cursor-pointer group">
+                            <div className="w-24 h-24 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 group-hover:border-gray-400 dark:group-hover:border-gray-500 transition-colors">
+                              <div className="w-full h-full flex items-center justify-center">
+                                <div className="w-10 h-10 bg-gray-300 dark:bg-gray-600 rounded"></div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
 
-              {/* Connections */}
+                      {/* Pagination Controls - Dots */}
+                      <div className="flex items-center justify-center gap-2 mt-4">
+                        {Array.from({ length: Math.ceil(currentlyWearing.length / itemsPerPage) }).map((_, index) => (
+                          <button
+                            key={index}
+                            onClick={() => setCurrentWearingIndex(index * itemsPerPage)}
+                            className={`w-2.5 h-2.5 rounded-full transition-colors ${
+                              Math.floor(currentWearingIndex / itemsPerPage) === index
+                                ? "bg-gray-900 dark:bg-gray-100"
+                                : "bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Friends */}
               <div className="py-6 border-b border-gray-200 dark:border-gray-800">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">Connections (7)</h2>
+                  <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">Friends (7)</h2>
                   <Link href="/connect" className="flex items-center gap-1 text-sm text-gray-900 dark:text-gray-100 hover:underline">
                     See All
                     <ChevronRight className="w-4 h-4" />
@@ -427,7 +432,7 @@ const ProfilePage = () => {
                 </div>
 
                 <div className="flex gap-6">
-                  {connections.map((connection) => (
+                  {friends.map((connection) => (
                     <Link key={connection.id} href={`/profile/${connection.username}`} className="flex flex-col items-center cursor-pointer group">
                       <div className="relative">
                         <div className="w-16 h-16 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 group-hover:border-gray-400 dark:group-hover:border-gray-500 transition-colors">
@@ -661,20 +666,24 @@ const ProfilePage = () => {
                  </div>
                </div>
 
-               {/* Statistics */}
-               <div className="py-6">
-                 <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-6">Statistics</h2>
-                 <div className="flex gap-24">
-                   <div className="text-center">
-                     <p className="text-sm text-gray-600 dark:text-gray-400">Join Date</p>
-                     <p className="text-lg font-bold text-gray-900 dark:text-gray-100 mt-1">07/12/2024</p>
-                   </div>
-                   <div className="text-center">
-                     <p className="text-sm text-gray-600 dark:text-gray-400">Place Visits</p>
-                     <p className="text-lg font-bold text-gray-900 dark:text-gray-100 mt-1">0</p>
-                   </div>
-                 </div>
-               </div>
+              {/* Statistics */}
+              <div className="py-6">
+                <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">Statistics</h2>
+                <div className="flex justify-between items-start">
+                  <div className="text-center flex-1">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Join Date</p>
+                    <p className="text-base font-semibold text-gray-900 dark:text-gray-100">7/15/2022</p>
+                  </div>
+                  <div className="text-center flex-1">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Last Online</p>
+                    <p className="text-base font-semibold text-gray-900 dark:text-gray-100">Now</p>
+                  </div>
+                  <div className="text-center flex-1">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Place Visits</p>
+                    <p className="text-base font-semibold text-gray-900 dark:text-gray-100">31</p>
+                  </div>
+                </div>
+              </div>
              </div>
            ) : (
              <div className="py-6">

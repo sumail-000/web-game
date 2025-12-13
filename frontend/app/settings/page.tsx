@@ -244,15 +244,15 @@ const SettingsPage = () => {
                         </label>
                         <label className="flex items-center gap-2 cursor-pointer">
                           <input type="radio" name="visibility" className="w-4 h-4" />
-                          <span className="text-sm text-gray-700 dark:text-gray-300">Connections, followers & people I follow</span>
+                          <span className="text-sm text-gray-700 dark:text-gray-300">Friends, followers & people I follow</span>
                         </label>
                         <label className="flex items-center gap-2 cursor-pointer">
                           <input type="radio" name="visibility" className="w-4 h-4" />
-                          <span className="text-sm text-gray-700 dark:text-gray-300">Connections & people I follow</span>
+                          <span className="text-sm text-gray-700 dark:text-gray-300">Friends & people I follow</span>
                         </label>
                         <label className="flex items-center gap-2 cursor-pointer">
                           <input type="radio" name="visibility" className="w-4 h-4" />
-                          <span className="text-sm text-gray-700 dark:text-gray-300">Connections</span>
+                          <span className="text-sm text-gray-700 dark:text-gray-300">Friends</span>
                         </label>
                         <label className="flex items-center gap-2 cursor-pointer">
                           <input type="radio" name="visibility" className="w-4 h-4" defaultChecked />

@@ -11,11 +11,11 @@ const ConnectPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("Connections");
+  const [activeTab, setActiveTab] = useState("Friends");
   const [connectionSearch, setConnectionSearch] = useState("");
   const [openMenuId, setOpenMenuId] = useState<number | null>(null);
 
-  // Mock connections data
+  // Mock friends data
   const connections = [
     { id: 1, name: "nass4", username: "@accamellow", status: "Offline", avatar: "https://robohash.org/nass4?set=set3" },
     { id: 2, name: "pcobilaa", username: "@labilaa02", status: "Offline", avatar: "https://robohash.org/pcobilaa?set=set3" },
@@ -46,11 +46,11 @@ const ConnectPage = () => {
     { id: 3, name: "NewUser3", username: "@newuser3", status: "Offline", avatar: "https://robohash.org/new3?set=set3" },
   ];
 
-  const tabs = ["Connections", "Following", "Followers", "Requests"];
+  const tabs = ["Friends", "Following", "Followers", "Requests"];
 
   const getCurrentData = () => {
     switch (activeTab) {
-      case "Connections":
+      case "Friends":
         return connections;
       case "Following":
         return following;
@@ -157,7 +157,7 @@ const ConnectPage = () => {
 
       {/* Main Content */}
       <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-8">My Connections</h1>
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-8">My Friends</h1>
 
         {/* Tabs */}
         <div className="flex gap-8 border-b border-gray-200 dark:border-gray-800 mb-6">
@@ -195,7 +195,7 @@ const ConnectPage = () => {
               <Search className="w-4 h-4 text-gray-500 dark:text-gray-400" />
               <input
                 type="text"
-                placeholder="Search Connections"
+                placeholder="Search Friends"
                 value={connectionSearch}
                 onChange={(e) => setConnectionSearch(e.target.value)}
                 className="bg-transparent text-gray-700 dark:text-gray-300 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-sm focus:outline-none w-full"
@@ -211,8 +211,8 @@ const ConnectPage = () => {
               key={user.id}
               className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 hover:shadow-lg transition-shadow border border-gray-200 dark:border-gray-700 relative"
             >
-              {/* 3-dot menu for Connections and Following */}
-              {(activeTab === "Connections" || activeTab === "Following") && (
+              {/* 3-dot menu for Friends and Following */}
+              {(activeTab === "Friends" || activeTab === "Following") && (
                 <div className="absolute top-4 right-4">
                   <button
                     onClick={() => setOpenMenuId(openMenuId === user.id ? null : user.id)}
@@ -232,7 +232,7 @@ const ConnectPage = () => {
                           onClick={() => setOpenMenuId(null)}
                           className="w-full px-4 py-2 text-left text-sm text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600 rounded"
                         >
-                          {activeTab === "Connections" ? "Unfriend" : "Unfollow"}
+                          {activeTab === "Friends" ? "Unfriend" : "Unfollow"}
                         </button>
                       </div>
                     </>

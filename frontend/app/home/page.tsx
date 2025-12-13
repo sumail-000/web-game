@@ -23,7 +23,7 @@ const HomePage = () => {
     { id: 8, title: "Parkour Master", rating: "56% Rating" },
   ];
 
-  // Mock connections
+  // Mock friends
   const connections = [
     { id: 1, name: "reahan007", avatar: "https://robohash.org/reahan007?set=set3", hasPremium: true },
     { id: 2, name: "nass4", avatar: "https://robohash.org/nass4?set=set3", hasPremium: false },
@@ -41,10 +41,10 @@ const HomePage = () => {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-8">
-        {/* Connections Section */}
+        {/* Friends Section */}
         <section className="mb-12">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Connections (7)</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Friends (7)</h2>
             <Link href="/connect" className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 font-semibold">
               See All
               <ChevronRight className="w-4 h-4" />
@@ -52,15 +52,15 @@ const HomePage = () => {
           </div>
           
           <div className="flex gap-4 overflow-x-auto pb-2">
-            {/* Connect Button */}
+            {/* Add Friend Button */}
             <Link href="/connect" className="flex-shrink-0 flex flex-col items-center gap-2 cursor-pointer hover:opacity-80">
               <div className="w-20 h-20 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center border-2 border-gray-300 dark:border-gray-600">
                 <Plus className="w-8 h-8 text-gray-600 dark:text-gray-400" />
               </div>
-              <p className="text-xs font-semibold text-gray-900 dark:text-gray-100">Connect</p>
+              <p className="text-xs font-semibold text-gray-900 dark:text-gray-100">Add Friend</p>
             </Link>
 
-            {/* Connections */}
+            {/* Friends */}
             {connections.map((connection) => (
               <Link key={connection.id} href={`/profile/${connection.name}`} className="flex-shrink-0 flex flex-col items-center gap-2 cursor-pointer hover:opacity-80">
                 <div className="relative">

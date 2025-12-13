@@ -72,7 +72,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             onClick={onClose}
           >
             <Users className="w-5 h-5" />
-            <span className="font-medium">Connect</span>
+            <span className="font-medium">Friends</span>
           </Link>
           
           <Link 

@@ -122,7 +122,7 @@ const CreateGroupPage = () => {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 max-w-5xl mx-auto px-4 py-8 w-full">
+      <main className="flex-1 w-full px-4 py-8">
         <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-8">Create Group</h1>
 
         <form className="space-y-8">

@@ -66,7 +66,7 @@ const GroupDetailPage = () => {
     },
   ];
 
-  // Mock allies/alliance communities
+  // Mock allies/alliances communities
   const allies = [
     { id: 1, name: "DuckXander Valentine", image: "https://robohash.org/duckval?set=set3", members: 271 },
     { id: 2, name: "DuckXander St. Patrick", image: "https://robohash.org/duckstpat?set=set3", members: 135 },
@@ -92,7 +92,7 @@ const GroupDetailPage = () => {
     { id: 12, name: "Red Scarf", image: "https://robohash.org/redscarf?set=set3", price: 50 },
   ];
 
-  const tabs = ["About", "Store", "Alliance"];
+  const tabs = ["About", "Store", "Alliances"];
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -112,9 +112,9 @@ const GroupDetailPage = () => {
       </div>
 
       {/* Main Layout */}
-      <div className="flex max-w-[1000px] mx-auto mt-4 gap-4 px-4">
+      <div className="flex w-full gap-4 px-4">
         {/* Sidebar - My Groups */}
-        <div className="w-[150px] bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg flex-shrink-0">
+        <div className="w-[200px] bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg flex-shrink-0">
           {/* Header */}
           <div className="flex items-center justify-between px-3 py-2 border-b border-gray-200 dark:border-gray-700">
             <h2 className="text-sm font-bold text-gray-900 dark:text-gray-100">Groups</h2>
@@ -308,6 +308,9 @@ const GroupDetailPage = () => {
           {/* Tab Content */}
           {activeTab === "About" && (
             <>
+              {/* Description Section */}
+              <DescriptionSection />
+
               {/* Announcements Section */}
               <div className="p-4 bg-white dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
                 <div className="flex items-center justify-between mb-3">
@@ -339,9 +342,6 @@ const GroupDetailPage = () => {
 
               {/* Social Links Section */}
               <SocialLinksSection />
-
-              {/* Description Section */}
-              <DescriptionSection />
 
               {/* Wall Section */}
               <div className="p-4">
@@ -465,7 +465,7 @@ const GroupDetailPage = () => {
             </div>
           )}
 
-          {activeTab === "Alliance" && (
+          {activeTab === "Alliances" && (
             <div className="p-4">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Allies</h2>

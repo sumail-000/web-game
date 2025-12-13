@@ -13,7 +13,7 @@ const GroupsPage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Mock groups data
-  const connectionsGroups = [
+  const friendsGroups = [
     { id: 1, name: "AdventureBlox", icon: "🎮", verified: true },
     { id: 2, name: "Kool closet", icon: "🎨", verified: false },
     { id: 3, name: "Sol's Studio", icon: "⭐", verified: false },
@@ -130,7 +130,7 @@ const GroupsPage = () => {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-8">
+      <main className="w-full px-4 py-8">
         {/* Top Section */}
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Search Groups</h1>
@@ -158,15 +158,15 @@ const GroupsPage = () => {
           Join a group to connect with people like you! Groups exist for all types of communities - fan clubs, help communities, hobbies, corporations, and more. Groups have their own walls and shared places.
         </p>
 
-        {/* Connections' Groups */}
+        {/* Friends' Groups */}
         <section className="mb-12">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Connections' Groups</h2>
+            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Friends' Groups</h2>
             <button className="text-blue-600 dark:text-blue-400 text-sm font-medium hover:underline">See All →</button>
           </div>
           
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {connectionsGroups.map((group) => (
+            {friendsGroups.map((group) => (
               <Link 
                 key={group.id} 
                 href={`/groups/${group.id}`}
