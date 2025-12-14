@@ -3,6 +3,8 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { MoreHorizontal, ChevronRight, ChevronLeft, ThumbsUp, Users, ExternalLink, Monitor, LayoutGrid } from "lucide-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGamepad } from "@fortawesome/free-solid-svg-icons";
 import Footer from "../components/Footer";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
@@ -21,7 +23,10 @@ const ProfilePage = () => {
   const menuRef = useRef<HTMLDivElement>(null);
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
   const [displayName, setDisplayName] = useState("sumail_00");
+  const [username, setUsername] = useState("@sumail_00");
   const [editedDisplayName, setEditedDisplayName] = useState("sumail_00");
+  const [editedUsername, setEditedUsername] = useState("@sumail_00");
+  const [showAdvertisement, setShowAdvertisement] = useState(true); // Toggle to show/hide ad
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -58,13 +63,13 @@ const ProfilePage = () => {
   ];
 
   const friends = [
-    { id: 1, name: "nass4", username: "@nass4", avatar: "https://robohash.org/nass4?set=set3" },
-    { id: 2, name: "pcobilaa", username: "@pcobilaa", avatar: "https://robohash.org/pcobilaa?set=set3" },
-    { id: 3, name: "JayJayElmi", username: "@JayJayElmi", avatar: "https://robohash.org/jayjay?set=set3" },
-    { id: 4, name: "reahan007", username: "@reahan007", avatar: "https://robohash.org/reahan007?set=set3" },
-    { id: 5, name: "intann_bil", username: "@intann_bil", avatar: "https://robohash.org/intann?set=set3" },
-    { id: 6, name: "reahan00R", username: "@reahan00R", avatar: "https://robohash.org/reahan00r?set=set3" },
-    { id: 7, name: "Rfgzxgfdd", username: "@Rfgzxgfdd", avatar: "https://robohash.org/rfg?set=set3" },
+    { id: 1, name: "nass4", username: "@nass4", avatar: "https://robohash.org/nass4?set=set3", status: "online-game" }, // Green - Playing game
+    { id: 2, name: "pcobilaa", username: "@pcobilaa", avatar: "https://robohash.org/pcobilaa?set=set3", status: "online" }, // Blue - Online
+    { id: 3, name: "JayJayElmi", username: "@JayJayElmi", avatar: "https://robohash.org/jayjay?set=set3", status: "studio" }, // Orange - In Studio
+    { id: 4, name: "reahan007", username: "@reahan007", avatar: "https://robohash.org/reahan007?set=set3", status: "offline" }, // Grey/None - Offline
+    { id: 5, name: "intann_bil", username: "@intann_bil", avatar: "https://robohash.org/intann?set=set3", status: "online-game" }, // Green - Playing game
+    { id: 6, name: "reahan00R", username: "@reahan00R", avatar: "https://robohash.org/reahan00r?set=set3", status: "online" }, // Blue - Online
+    { id: 7, name: "Rfgzxgfdd", username: "@Rfgzxgfdd", avatar: "https://robohash.org/rfg?set=set3", status: "studio" }, // Orange - In Studio
   ];
 
   // Groups
@@ -159,10 +164,29 @@ const ProfilePage = () => {
 
        {/* Main Content */}
        <main className="flex-1">
+         {/* Advertisement Banner - 728x90 */}
+         {showAdvertisement && (
+           <div className="flex justify-center py-4 border-b border-gray-200 dark:border-gray-800">
+             <div className="w-[728px]">
+               {/* Banner */}
+               <div className="w-full h-[90px] bg-gray-200 dark:bg-gray-700 rounded flex items-center justify-center text-gray-500 dark:text-gray-400 text-sm font-medium border border-gray-300 dark:border-gray-600">
+                 Advertisement Banner (728 x 90)
+               </div>
+               {/* Advertisement label and Report link */}
+               <div className="flex items-center justify-between mt-1">
+                 <span className="text-xs text-gray-500 dark:text-gray-400 uppercase">Advertisement</span>
+                 <button className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:underline">
+                   Report
+                 </button>
+               </div>
+             </div>
+           </div>
+         )}
+
          {/* Profile Header */}
          <div className="max-w-[900px] mx-auto px-4">
            <div className="flex items-start gap-6 py-6 border-b border-gray-200 dark:border-gray-800">
-             {/* Avatar with premium badge */}
+             {/* Avatar with status badge */}
              <div className="relative">
                <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700">
                  <img 
@@ -171,11 +195,9 @@ const ProfilePage = () => {
                    className="w-full h-full object-cover"
                  />
                </div>
-               {/* Premium badge */}
-               <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-blue-500 rounded-full flex items-center justify-center border-2 border-white dark:border-gray-900">
-                 <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
-                   <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
-                 </svg>
+               {/* Status Badge - In Game (Green with gamepad icon) */}
+               <div className="absolute w-7 h-7 bg-green-500 rounded-full flex items-center justify-center border-2 border-white dark:border-gray-900" style={{ bottom: '-3.5px', right: '-3.5px' }}>
+                 <FontAwesomeIcon icon={faGamepad} className="text-white text-xs" />
                </div>
              </div>
 
@@ -438,6 +460,18 @@ const ProfilePage = () => {
                         <div className="w-16 h-16 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 group-hover:border-gray-400 dark:group-hover:border-gray-500 transition-colors">
                           <img src={connection.avatar} alt={connection.name} className="w-full h-full object-cover" />
                         </div>
+                        {/* Status Dot - 50% overlap like main profile */}
+                        {connection.status && connection.status !== "offline" && (
+                          <div 
+                            className={`absolute w-4 h-4 rounded-full border-2 border-white dark:border-gray-900 ${
+                              connection.status === "online-game" ? "bg-green-500" :
+                              connection.status === "online" ? "bg-blue-500" :
+                              connection.status === "studio" ? "bg-orange-500" :
+                              "bg-gray-400"
+                            }`}
+                            style={{ bottom: '-2px', right: '-2px' }}
+                          />
+                        )}
                       </div>
                       <p className="mt-2 text-xs text-gray-900 dark:text-gray-100">{connection.name}</p>
                     </Link>
@@ -765,6 +799,7 @@ const ProfilePage = () => {
               onClick={() => {
                 setShowEditProfileModal(false);
                 setEditedDisplayName(displayName);
+                setEditedUsername(username);
               }}
               className="absolute top-4 right-4 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
             >
@@ -774,17 +809,15 @@ const ProfilePage = () => {
             </button>
 
             {/* Header */}
-            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-1">
-              Change Display Name
+            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+              Edit Profile
             </h2>
-            
-            {/* Warning message */}
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
-              Important: Your display name can only be changed once every 7 days
-            </p>
 
-            {/* Input */}
-            <div className="mb-2">
+            {/* Display Name Input */}
+            <div className="mb-6">
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                Display Name
+              </label>
               <input
                 type="text"
                 value={editedDisplayName}
@@ -792,11 +825,26 @@ const ProfilePage = () => {
                 maxLength={20}
                 className="w-full bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded px-4 py-2.5 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
+              <div className="text-right text-sm text-gray-600 dark:text-gray-400 mt-1">
+                {editedDisplayName.length}/20
+              </div>
             </div>
 
-            {/* Character count */}
-            <div className="text-right text-sm text-gray-600 dark:text-gray-400 mb-6">
-              {editedDisplayName.length}/20
+            {/* Username Input */}
+            <div className="mb-6">
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                Username
+              </label>
+              <input
+                type="text"
+                value={editedUsername}
+                onChange={(e) => setEditedUsername(e.target.value)}
+                maxLength={20}
+                className="w-full bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded px-4 py-2.5 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <div className="text-right text-sm text-gray-600 dark:text-gray-400 mt-1">
+                {editedUsername.length}/20
+              </div>
             </div>
 
             {/* Action buttons */}
@@ -805,6 +853,7 @@ const ProfilePage = () => {
                 onClick={() => {
                   setShowEditProfileModal(false);
                   setEditedDisplayName(displayName);
+                  setEditedUsername(username);
                 }}
                 className="px-6 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100 font-medium rounded transition-colors"
               >
@@ -813,6 +862,7 @@ const ProfilePage = () => {
               <button
                 onClick={() => {
                   setDisplayName(editedDisplayName);
+                  setUsername(editedUsername);
                   setShowEditProfileModal(false);
                 }}
                 className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded transition-colors"

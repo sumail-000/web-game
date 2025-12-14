@@ -17,33 +17,33 @@ const ConnectPage = () => {
 
   // Mock friends data
   const connections = [
-    { id: 1, name: "nass4", username: "@accamellow", status: "Offline", avatar: "https://robohash.org/nass4?set=set3" },
-    { id: 2, name: "pcobilaa", username: "@labilaa02", status: "Offline", avatar: "https://robohash.org/pcobilaa?set=set3" },
-    { id: 3, name: "JayJayElmi", username: "@JayJayElmi", status: "Offline", avatar: "https://robohash.org/jayjay?set=set3" },
-    { id: 4, name: "intann_bil", username: "@intann_bil", status: "Offline", avatar: "https://robohash.org/intann?set=set3" },
-    { id: 5, name: "reahan00R", username: "@reahan00R", status: "Offline", avatar: "https://robohash.org/reahan?set=set3" },
-    { id: 6, name: "Rfgzxgfdd", username: "@Rfgzxgfdd", status: "Offline", avatar: "https://robohash.org/rfg?set=set3" },
+    { id: 1, name: "nass4", username: "@accamellow", status: "Playing", statusType: "online-game", avatar: "https://robohash.org/nass4?set=set3" },
+    { id: 2, name: "pcobilaa", username: "@labilaa02", status: "Online", statusType: "online", avatar: "https://robohash.org/pcobilaa?set=set3" },
+    { id: 3, name: "JayJayElmi", username: "@JayJayElmi", status: "In Studio", statusType: "studio", avatar: "https://robohash.org/jayjay?set=set3" },
+    { id: 4, name: "intann_bil", username: "@intann_bil", status: "Offline", statusType: "offline", avatar: "https://robohash.org/intann?set=set3" },
+    { id: 5, name: "reahan00R", username: "@reahan00R", status: "Playing", statusType: "online-game", avatar: "https://robohash.org/reahan?set=set3" },
+    { id: 6, name: "Rfgzxgfdd", username: "@Rfgzxgfdd", status: "Online", statusType: "online", avatar: "https://robohash.org/rfg?set=set3" },
   ];
 
   const following = [
-    { id: 1, name: "GameDev123", username: "@gamedev123", status: "Online", avatar: "https://robohash.org/gamedev?set=set3" },
-    { id: 2, name: "BuilderPro", username: "@builderpro", status: "Offline", avatar: "https://robohash.org/builder?set=set3" },
-    { id: 3, name: "CreativeStudio", username: "@creative", status: "Online", avatar: "https://robohash.org/creative?set=set3" },
-    { id: 4, name: "PixelMaster", username: "@pixelmaster", status: "Offline", avatar: "https://robohash.org/pixel?set=set3" },
+    { id: 1, name: "GameDev123", username: "@gamedev123", status: "Online", statusType: "online", avatar: "https://robohash.org/gamedev?set=set3" },
+    { id: 2, name: "BuilderPro", username: "@builderpro", status: "Offline", statusType: "offline", avatar: "https://robohash.org/builder?set=set3" },
+    { id: 3, name: "CreativeStudio", username: "@creative", status: "Playing", statusType: "online-game", avatar: "https://robohash.org/creative?set=set3" },
+    { id: 4, name: "PixelMaster", username: "@pixelmaster", status: "In Studio", statusType: "studio", avatar: "https://robohash.org/pixel?set=set3" },
   ];
 
   const followers = [
-    { id: 1, name: "FanUser1", username: "@fanuser1", status: "Online", avatar: "https://robohash.org/fan1?set=set3" },
-    { id: 2, name: "FanUser2", username: "@fanuser2", status: "Offline", avatar: "https://robohash.org/fan2?set=set3" },
-    { id: 3, name: "FanUser3", username: "@fanuser3", status: "Offline", avatar: "https://robohash.org/fan3?set=set3" },
-    { id: 4, name: "FanUser4", username: "@fanuser4", status: "Online", avatar: "https://robohash.org/fan4?set=set3" },
-    { id: 5, name: "FanUser5", username: "@fanuser5", status: "Offline", avatar: "https://robohash.org/fan5?set=set3" },
+    { id: 1, name: "FanUser1", username: "@fanuser1", status: "Online", statusType: "online", avatar: "https://robohash.org/fan1?set=set3" },
+    { id: 2, name: "FanUser2", username: "@fanuser2", status: "Offline", statusType: "offline", avatar: "https://robohash.org/fan2?set=set3" },
+    { id: 3, name: "FanUser3", username: "@fanuser3", status: "Playing", statusType: "online-game", avatar: "https://robohash.org/fan3?set=set3" },
+    { id: 4, name: "FanUser4", username: "@fanuser4", status: "In Studio", statusType: "studio", avatar: "https://robohash.org/fan4?set=set3" },
+    { id: 5, name: "FanUser5", username: "@fanuser5", status: "Offline", statusType: "offline", avatar: "https://robohash.org/fan5?set=set3" },
   ];
 
   const requests = [
-    { id: 1, name: "NewUser1", username: "@newuser1", status: "Offline", avatar: "https://robohash.org/new1?set=set3" },
-    { id: 2, name: "NewUser2", username: "@newuser2", status: "Online", avatar: "https://robohash.org/new2?set=set3" },
-    { id: 3, name: "NewUser3", username: "@newuser3", status: "Offline", avatar: "https://robohash.org/new3?set=set3" },
+    { id: 1, name: "NewUser1", username: "@newuser1", status: "Offline", statusType: "offline", avatar: "https://robohash.org/new1?set=set3" },
+    { id: 2, name: "NewUser2", username: "@newuser2", status: "Online", statusType: "online", avatar: "https://robohash.org/new2?set=set3" },
+    { id: 3, name: "NewUser3", username: "@newuser3", status: "Playing", statusType: "online-game", avatar: "https://robohash.org/new3?set=set3" },
   ];
 
   const tabs = ["Friends", "Following", "Followers", "Requests"];
@@ -241,24 +241,48 @@ const ConnectPage = () => {
               )}
 
               <div className="flex flex-col items-center text-center">
-                <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 mb-3">
+                <div className="relative w-24 h-24 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 mb-3">
                   <img
                     src={user.avatar}
                     alt={user.name}
                     className="w-full h-full object-cover"
                   />
+                  {/* Status Dot */}
+                  {user.statusType && user.statusType !== "offline" && (
+                    <div 
+                      className={`absolute w-5 h-5 rounded-full border-2 border-white dark:border-gray-900 ${
+                        user.statusType === "online-game" ? "bg-green-500" :
+                        user.statusType === "online" ? "bg-blue-500" :
+                        user.statusType === "studio" ? "bg-orange-500" :
+                        "bg-gray-400"
+                      }`}
+                      style={{ bottom: '-2.5px', right: '-2.5px' }}
+                    />
+                  )}
                 </div>
                 
-                <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-1">
-                  {user.name}
-                </h3>
+                <div className="flex items-center gap-2 mb-1">
+                  {/* Status Dot before name */}
+                  <div 
+                    className={`w-2 h-2 rounded-full ${
+                      user.statusType === "online-game" ? "bg-green-500" :
+                      user.statusType === "online" ? "bg-blue-500" :
+                      user.statusType === "studio" ? "bg-orange-500" :
+                      "bg-gray-400"
+                    }`}
+                  />
+                  <h3 className="font-bold text-gray-900 dark:text-gray-100">
+                    {user.name}
+                  </h3>
+                </div>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
                   {user.username}
                 </p>
                 <p className={`text-sm font-medium ${
-                  user.status === "Online" 
-                    ? "text-green-600 dark:text-green-400" 
-                    : "text-gray-500 dark:text-gray-400"
+                  user.statusType === "online-game" ? "text-green-600 dark:text-green-400" :
+                  user.statusType === "online" ? "text-blue-600 dark:text-blue-400" :
+                  user.statusType === "studio" ? "text-orange-600 dark:text-orange-400" :
+                  "text-gray-500 dark:text-gray-400"
                 }`}>
                   {user.status}
                 </p>

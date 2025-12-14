@@ -19,7 +19,12 @@ const AvatarPage = () => {
 
   const mainTabs = ["Recent", "Characters", "Clothing", "Accessories", "Head & Body", "Animations"];
   const subTabs: { [key: string]: string[] } = {
-    "Recent": ["Recent", "Recently Added"],
+    "Recent": ["Recently Added", "Recently Worn", "Accessories", "Clothing", "Body Parts", "Animations", "Characters"],
+    "Characters": ["Purchased", "Creations"],
+    "Clothing": ["Tops", "Outerwear", "Bottoms", "Shoes", "Classic"],
+    "Accessories": ["Head", "Face", "Neck", "Shoulders", "Front", "Back", "Waist", "Gear"],
+    "Head & Body": ["Heads", "Skin Tone", "Hair", "Classic Heads", "Classic Faces", "Torso", "Left Arms", "Right Arms", "Left Legs", "Right Legs", "Scale"],
+    "Animations": ["Emotes", "Walk", "Run", "Fall", "Jump", "Swim", "Climb", "Idle"],
   };
 
   // Mock avatar items
@@ -210,7 +215,7 @@ const AvatarPage = () => {
                           setActiveSubTab(subTabs[tab][0]);
                         }
                       }}
-                      className={`pb-3 text-sm font-semibold transition-colors relative ${
+                      className={`pb-3 text-sm font-semibold transition-colors relative group ${
                         activeTab === tab
                           ? "text-gray-900 dark:text-gray-100"
                           : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
@@ -218,8 +223,13 @@ const AvatarPage = () => {
                     >
                       {tab}
                       <ChevronDown className={`w-4 h-4 inline ml-1 ${activeTab === tab ? "" : "opacity-50"}`} />
+                      {/* Active state - Black underline */}
                       {activeTab === tab && (
                         <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gray-900 dark:bg-gray-100" />
+                      )}
+                      {/* Hover state - Grey underline */}
+                      {activeTab !== tab && (
+                        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gray-400 dark:bg-gray-600 opacity-0 group-hover:opacity-100 transition-opacity" />
                       )}
                     </button>
                   ))}
@@ -253,7 +263,7 @@ const AvatarPage = () => {
                 {avatarItems.map((item) => (
                   <div
                     key={item.id}
-                    className="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer relative border border-gray-200 dark:border-gray-700"
+                    className="rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer relative"
                   >
                     {/* Selected checkmark */}
                     {item.selected && (
@@ -265,12 +275,12 @@ const AvatarPage = () => {
                     )}
 
                     {/* Item Image Placeholder */}
-                    <div className="aspect-square bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                    <div className="aspect-square bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center border border-gray-200 dark:border-gray-700">
                       <div className="w-20 h-20 bg-gray-300 dark:bg-gray-600 rounded"></div>
                     </div>
 
-                    {/* Item Name */}
-                    <div className="p-2">
+                    {/* Item Name - No background */}
+                    <div className="pt-2">
                       <p className="text-xs font-medium text-gray-900 dark:text-gray-100 truncate">
                         {item.name}
                       </p>

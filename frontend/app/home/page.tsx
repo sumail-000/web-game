@@ -25,13 +25,13 @@ const HomePage = () => {
 
   // Mock friends
   const connections = [
-    { id: 1, name: "reahan007", avatar: "https://robohash.org/reahan007?set=set3", hasPremium: true },
-    { id: 2, name: "nass4", avatar: "https://robohash.org/nass4?set=set3", hasPremium: false },
-    { id: 3, name: "pcobilaa", avatar: "https://robohash.org/pcobilaa?set=set3", hasPremium: false },
-    { id: 4, name: "JayJayElmi", avatar: "https://robohash.org/jayjay?set=set3", hasPremium: false },
-    { id: 5, name: "intann_bil", avatar: "https://robohash.org/intann?set=set3", hasPremium: false },
-    { id: 6, name: "reahan000R", avatar: "https://robohash.org/reahan00r?set=set3", hasPremium: false },
-    { id: 7, name: "Rfgzxgfdd", avatar: "https://robohash.org/rfg?set=set3", hasPremium: false },
+    { id: 1, name: "reahan007", avatar: "https://robohash.org/reahan007?set=set3", hasPremium: true, status: "online-game" },
+    { id: 2, name: "nass4", avatar: "https://robohash.org/nass4?set=set3", hasPremium: false, status: "online" },
+    { id: 3, name: "pcobilaa", avatar: "https://robohash.org/pcobilaa?set=set3", hasPremium: false, status: "studio" },
+    { id: 4, name: "JayJayElmi", avatar: "https://robohash.org/jayjay?set=set3", hasPremium: false, status: "offline" },
+    { id: 5, name: "intann_bil", avatar: "https://robohash.org/intann?set=set3", hasPremium: false, status: "online-game" },
+    { id: 6, name: "reahan000R", avatar: "https://robohash.org/reahan00r?set=set3", hasPremium: false, status: "online" },
+    { id: 7, name: "Rfgzxgfdd", avatar: "https://robohash.org/rfg?set=set3", hasPremium: false, status: "studio" },
   ];
 
   return (
@@ -67,12 +67,17 @@ const HomePage = () => {
                   <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-700">
                     <img src={connection.avatar} alt={connection.name} className="w-full h-full object-cover" />
                   </div>
-                  {connection.hasPremium && (
-                    <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center border-2 border-white dark:border-gray-900">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
-                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
-                      </svg>
-                    </div>
+                  {/* Status Dot - 50% overlap positioned outside */}
+                  {connection.status && connection.status !== "offline" && (
+                    <div 
+                      className={`absolute w-5 h-5 rounded-full border-2 border-white dark:border-gray-900 ${
+                        connection.status === "online-game" ? "bg-green-500" :
+                        connection.status === "online" ? "bg-blue-500" :
+                        connection.status === "studio" ? "bg-orange-500" :
+                        "bg-gray-400"
+                      }`}
+                      style={{ bottom: '-2.5px', right: '-2.5px' }}
+                    />
                   )}
                 </div>
                 <p className="text-xs font-semibold text-gray-900 dark:text-gray-100">{connection.name}</p>
