@@ -7,6 +7,7 @@ import { ChevronRight, Plus } from "lucide-react";
 import Footer from "../components/Footer";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
+import ProtectedRoute from "../components/ProtectedRoute";
 
 const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -80,13 +81,14 @@ const HomePage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
-      {/* Header */}
-      <Header
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        setSidebarOpen={setSidebarOpen}
-      />
+    <ProtectedRoute>
+      <div className="min-h-screen bg-white dark:bg-gray-900">
+        {/* Header */}
+        <Header
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          setSidebarOpen={setSidebarOpen}
+        />
 
       {/* Main Content with Ads */}
       <div className="flex justify-center gap-4 px-4 py-8">
@@ -446,9 +448,10 @@ const HomePage = () => {
       {/* Footer */}
       <Footer />
 
-      {/* Sidebar Overlay */}
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-    </div>
+        {/* Sidebar Overlay */}
+        <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      </div>
+    </ProtectedRoute>
   );
 };
 

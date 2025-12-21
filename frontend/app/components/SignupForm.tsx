@@ -1,7 +1,9 @@
 'use client';
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { ChevronDown } from "lucide-react";
+import { authApi, storage } from "@/lib/api";
 
 const months = [
   "January", "February", "March", "April", "May", "June",
@@ -13,16 +15,53 @@ const currentYear = new Date().getFullYear();
 const years = Array.from({ length: 100 }, (_, i) => currentYear - i);
 
 const SignupForm = () => {
+  const router = useRouter();
   const [month, setMonth] = useState("");
   const [day, setDay] = useState("");
   const [year, setYear] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [gender, setGender] = useState<"male" | "female" | null>(null);
+  const [errors, setErrors] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ month, day, year, username, password, gender });
+    setErrors([]);
+    setLoading(true);
+
+    try {
+      const response = await authApi.signup({
+        username,
+        password,
+        month,
+        day,
+        year,
+        gender: gender || undefined,
+      });
+
+      if (response.success && response.data) {
+        // Store tokens and user data
+        storage.setTokens(response.data.accessToken, response.data.refreshToken);
+        storage.setUser(response.data.user);
+        
+        // Redirect to home
+        router.push('/home');
+      } else {
+        // Handle validation errors from backend
+        if (response.errors && Array.isArray(response.errors) && response.errors.length > 0) {
+          setErrors(response.errors.map((err: any) => err.msg || err.message || String(err)));
+        } else if (response.message) {
+          setErrors([response.message]);
+        } else {
+          setErrors(['Signup failed. Please try again.']);
+        }
+      }
+    } catch (err) {
+      setErrors(['An error occurred. Please try again.']);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -154,12 +193,28 @@ const SignupForm = () => {
           If you are under 18, you agree that your parent/guardian permits you to create this account and agrees to our Terms of Use.
         </p>
 
+        {/* Error Messages */}
+        {errors.length > 0 && (
+          <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded text-sm">
+            {errors.length === 1 ? (
+              <div className="font-medium">{errors[0]}</div>
+            ) : (
+              <ul className="list-disc list-inside space-y-1">
+                {errors.map((err, index) => (
+                  <li key={index}>{err}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
+
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full bg-muted hover:bg-muted/80 text-foreground font-bold py-3 rounded transition-colors"
+          disabled={loading}
+          className="w-full bg-muted hover:bg-muted/80 text-foreground font-bold py-3 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Sign Up
+          {loading ? 'Creating Account...' : 'Sign Up'}
         </button>
       </form>
     </div>

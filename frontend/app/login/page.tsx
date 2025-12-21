@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import Footer from "../components/Footer";
+import PublicRoute from "../components/PublicRoute";
+import { authApi, storage } from "@/lib/api";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -12,12 +14,39 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [showEmailCodeModal, setShowEmailCodeModal] = useState(false);
   const [email, setEmail] = useState("");
+  const [errors, setErrors] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login attempt:", { username, password });
-    // Redirect to home after successful login
-    router.push("/home");
+    setErrors([]);
+    setLoading(true);
+
+    try {
+      const response = await authApi.login({ username, password });
+
+      if (response.success && response.data) {
+        // Store tokens and user data
+        storage.setTokens(response.data.accessToken, response.data.refreshToken);
+        storage.setUser(response.data.user);
+        
+        // Redirect to home
+        router.push("/home");
+      } else {
+        // Handle validation errors from backend
+        if (response.errors && Array.isArray(response.errors) && response.errors.length > 0) {
+          setErrors(response.errors.map((err: any) => err.msg || err.message || String(err)));
+        } else if (response.message) {
+          setErrors([response.message]);
+        } else {
+          setErrors(['Login failed. Please try again.']);
+        }
+      }
+    } catch (err) {
+      setErrors(['An error occurred. Please try again.']);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSendCode = (e: React.FormEvent) => {
@@ -27,12 +56,13 @@ const LoginPage = () => {
   };
 
   return (
-    <div
-      className="min-h-screen bg-gray-900 bg-cover bg-center bg-no-repeat relative dark"
-      style={{ backgroundImage: `url(/gaming-bg.jpg)` }}
-    >
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/40" />
+    <PublicRoute>
+      <div
+        className="min-h-screen bg-gray-900 bg-cover bg-center bg-no-repeat relative dark"
+        style={{ backgroundImage: `url(/gaming-bg.jpg)` }}
+      >
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black/40" />
 
       {/* Content */}
       <div className="relative z-10 min-h-screen flex flex-col">
@@ -114,12 +144,28 @@ const LoginPage = () => {
                 />
               </div>
 
+              {/* Error Messages */}
+              {errors.length > 0 && (
+                <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded text-sm">
+                  {errors.length === 1 ? (
+                    <div className="font-medium">{errors[0]}</div>
+                  ) : (
+                    <ul className="list-disc list-inside space-y-1">
+                      {errors.map((err, index) => (
+                        <li key={index}>{err}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
+
               {/* Login Button */}
               <button
                 type="submit"
-                className="w-full bg-white text-gray-900 hover:bg-gray-100 font-bold py-3 h-12 text-base rounded"
+                disabled={loading}
+                className="w-full bg-white text-gray-900 hover:bg-gray-100 font-bold py-3 h-12 text-base rounded disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Log In
+                {loading ? 'Logging in...' : 'Log In'}
               </button>
             </form>
 
@@ -205,7 +251,8 @@ const LoginPage = () => {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </PublicRoute>
   );
 };
 

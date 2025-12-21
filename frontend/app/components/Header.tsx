@@ -7,6 +7,7 @@ import Image from "next/image";
 import { Search, Menu, Bell, Settings as SettingsIcon } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import VerifiedBadge from "./VerifiedBadge";
+import { logout } from "@/lib/auth";
 
 interface HeaderProps {
   searchQuery: string;
@@ -25,10 +26,8 @@ export default function Header({
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   const handleLogout = () => {
-    // Clear any auth tokens/session data here
-    console.log("Logging out...");
-    router.push("/login");
     setSettingsOpen(false);
+    logout(); // This will clear tokens and redirect to login
   };
 
   return (

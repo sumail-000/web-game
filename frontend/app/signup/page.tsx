@@ -1,15 +1,19 @@
+'use client';
+
 import Link from "next/link";
 import SignupForm from "../components/SignupForm";
 import Footer from "../components/Footer";
+import PublicRoute from "../components/PublicRoute";
 
 const SignupPage = () => {
   return (
-    <div
-      className="min-h-screen bg-gray-900 bg-cover bg-center bg-no-repeat relative dark"
-      style={{ backgroundImage: `url(/gaming-bg.jpg)` }}
-    >
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/40" />
+    <PublicRoute>
+      <div
+        className="min-h-screen bg-gray-900 bg-cover bg-center bg-no-repeat relative dark"
+        style={{ backgroundImage: `url(/gaming-bg.jpg)` }}
+      >
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black/40" />
 
       {/* Content */}
       <div className="relative z-10 min-h-screen flex flex-col">
@@ -46,7 +50,8 @@ const SignupPage = () => {
         {/* Footer */}
         <Footer />
       </div>
-    </div>
+      </div>
+    </PublicRoute>
   );
 };
 
