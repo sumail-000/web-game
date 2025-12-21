@@ -1,7 +1,8 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ChevronRight, Plus } from "lucide-react";
 import Footer from "../components/Footer";
 import Sidebar from "../components/Sidebar";
@@ -10,6 +11,8 @@ import Header from "../components/Header";
 const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [showLeftAd, setShowLeftAd] = useState(true);
+  const [showRightAd, setShowRightAd] = useState(true);
 
   // Placeholder game data
   const games = [
@@ -25,243 +28,420 @@ const HomePage = () => {
 
   // Mock friends
   const connections = [
-    { id: 1, name: "reahan007", avatar: "https://robohash.org/reahan007?set=set3", hasPremium: true, status: "online-game" },
-    { id: 2, name: "nass4", avatar: "https://robohash.org/nass4?set=set3", hasPremium: false, status: "online" },
-    { id: 3, name: "pcobilaa", avatar: "https://robohash.org/pcobilaa?set=set3", hasPremium: false, status: "studio" },
-    { id: 4, name: "JayJayElmi", avatar: "https://robohash.org/jayjay?set=set3", hasPremium: false, status: "offline" },
-    { id: 5, name: "intann_bil", avatar: "https://robohash.org/intann?set=set3", hasPremium: false, status: "online-game" },
-    { id: 6, name: "reahan000R", avatar: "https://robohash.org/reahan00r?set=set3", hasPremium: false, status: "online" },
-    { id: 7, name: "Rfgzxgfdd", avatar: "https://robohash.org/rfg?set=set3", hasPremium: false, status: "studio" },
+    {
+      id: 1,
+      name: "reahan007",
+      avatar: "https://robohash.org/reahan007?set=set3",
+      hasPremium: true,
+      status: "online-game",
+    },
+    {
+      id: 2,
+      name: "nass4",
+      avatar: "https://robohash.org/nass4?set=set3",
+      hasPremium: false,
+      status: "online",
+    },
+    {
+      id: 3,
+      name: "pcobilaa",
+      avatar: "https://robohash.org/pcobilaa?set=set3",
+      hasPremium: false,
+      status: "studio",
+    },
+    {
+      id: 4,
+      name: "JayJayElmi",
+      avatar: "https://robohash.org/jayjay?set=set3",
+      hasPremium: false,
+      status: "offline",
+    },
+    {
+      id: 5,
+      name: "intann_bil",
+      avatar: "https://robohash.org/intann?set=set3",
+      hasPremium: false,
+      status: "online-game",
+    },
+    {
+      id: 6,
+      name: "reahan000R",
+      avatar: "https://robohash.org/reahan00r?set=set3",
+      hasPremium: false,
+      status: "online",
+    },
+    {
+      id: 7,
+      name: "Rfgzxgfdd",
+      avatar: "https://robohash.org/rfg?set=set3",
+      hasPremium: false,
+      status: "studio",
+    },
   ];
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
       {/* Header */}
-      <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} setSidebarOpen={setSidebarOpen} />
+      <Header
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        setSidebarOpen={setSidebarOpen}
+      />
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        {/* Friends Section */}
-        <section className="mb-12">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Friends (7)</h2>
-            <Link href="/connect" className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 font-semibold">
-              See All
-              <ChevronRight className="w-4 h-4" />
-            </Link>
-          </div>
-          
-          <div className="flex gap-4 overflow-x-auto pb-2">
-            {/* Add Friend Button */}
-            <Link href="/connect" className="flex-shrink-0 flex flex-col items-center gap-2 cursor-pointer hover:opacity-80">
-              <div className="w-20 h-20 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center border-2 border-gray-300 dark:border-gray-600">
-                <Plus className="w-8 h-8 text-gray-600 dark:text-gray-400" />
+      {/* Main Content with Ads */}
+      <div className="flex justify-center gap-4 px-4 py-8">
+        {/* Left Skyscraper Ad */}
+        {showLeftAd && (
+          <div className="hidden xl:block flex-shrink-0">
+            <div className="relative w-[160px]">
+              <button
+                onClick={() => setShowLeftAd(false)}
+                className="absolute top-2 right-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 text-2xl font-bold leading-none z-10"
+                aria-label="Close ad"
+              >
+                ×
+              </button>
+              <div className="w-[160px] h-[600px] bg-gray-200 dark:bg-gray-700 rounded flex flex-col items-center justify-center text-gray-500 dark:text-gray-400 text-sm font-medium border border-gray-300 dark:border-gray-600">
+                <span className="text-center px-2">Advertisement</span>
+                <span className="text-center px-2 mt-2 text-xs">
+                  (160 x 600)
+                </span>
               </div>
-              <p className="text-xs font-semibold text-gray-900 dark:text-gray-100">Add Friend</p>
-            </Link>
+              <div className="mt-1 text-center">
+                <span className="text-xs text-gray-500 dark:text-gray-400 uppercase">
+                  Advertisement
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
 
-            {/* Friends */}
-            {connections.map((connection) => (
-              <Link key={connection.id} href={`/profile/${connection.name}`} className="flex-shrink-0 flex flex-col items-center gap-2 cursor-pointer hover:opacity-80">
-                <div className="relative">
-                  <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-700">
-                    <img src={connection.avatar} alt={connection.name} className="w-full h-full object-cover" />
-                  </div>
-                  {/* Status Dot - 50% overlap positioned outside */}
-                  {connection.status && connection.status !== "offline" && (
-                    <div 
-                      className={`absolute w-5 h-5 rounded-full border-2 border-white dark:border-gray-900 ${
-                        connection.status === "online-game" ? "bg-green-500" :
-                        connection.status === "online" ? "bg-blue-500" :
-                        connection.status === "studio" ? "bg-orange-500" :
-                        "bg-gray-400"
-                      }`}
-                      style={{ bottom: '-2.5px', right: '-2.5px' }}
-                    />
-                  )}
-                </div>
-                <p className="text-xs font-semibold text-gray-900 dark:text-gray-100">{connection.name}</p>
+        {/* Center Content */}
+        <main className="max-w-7xl w-full">
+          {/* Friends Section */}
+          <section className="mb-12">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                Friends (7)
+              </h2>
+              <Link
+                href="/connect"
+                className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 font-semibold"
+              >
+                See All
+                <ChevronRight className="w-4 h-4" />
               </Link>
-            ))}
-          </div>
-        </section>
+            </div>
 
-        {/* Recommended For You Section */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Recommended For You</h2>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {games.map((game) => (
-              <div key={game.id} className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
-                {/* Game Thumbnail Placeholder */}
-                <div className="aspect-video bg-gray-200 dark:bg-gray-700 flex items-center justify-center relative group">
-                  <div className="text-gray-400 dark:text-gray-500 text-sm">Game Thumbnail</div>
-                  
-                  {/* Play Button Overlay */}
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2 rounded">
-                      PLAY
-                    </button>
-                  </div>
+            <div className="flex gap-4 overflow-x-auto pb-2">
+              {/* Add Friend Button */}
+              <Link
+                href="/connect"
+                className="flex-shrink-0 flex flex-col items-center gap-2 cursor-pointer hover:opacity-80"
+              >
+                <div className="w-20 h-20 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center border-2 border-gray-300 dark:border-gray-600">
+                  <Plus className="w-8 h-8 text-gray-600 dark:text-gray-400" />
                 </div>
-                
-                {/* Game Info */}
-                <div className="p-3">
-                  <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-sm mb-1 truncate">
-                    {game.title}
-                  </h3>
-                  <div className="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-400">
-                    <span className="text-green-600 dark:text-green-500">👍</span>
-                    <span>{game.rating}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+                <p className="text-xs font-semibold text-gray-900 dark:text-gray-100">
+                  Add Friend
+                </p>
+              </Link>
 
-        {/* Continue Playing Section */}
-        <section className="mb-12">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Continue</h2>
-            <Link href="/continue" className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 font-semibold">
-              See All
-              <ChevronRight className="w-4 h-4" />
-            </Link>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {games.slice(0, 4).map((game) => (
-              <div key={`continue-${game.id}`} className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
-                <div className="aspect-video bg-gray-200 dark:bg-gray-700 flex items-center justify-center relative group">
-                  <div className="text-gray-400 dark:text-gray-500 text-sm">Game Thumbnail</div>
-                  
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2 rounded">
-                      PLAY
-                    </button>
+              {/* Friends */}
+              {connections.map((connection) => (
+                <Link
+                  key={connection.id}
+                  href={`/profile/${connection.name}`}
+                  className="flex-shrink-0 flex flex-col items-center gap-2 cursor-pointer hover:opacity-80"
+                >
+                  <div className="relative">
+                    <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-700 relative">
+                      <Image
+                        src={connection.avatar}
+                        alt={connection.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    {/* Status Dot - 50% overlap positioned outside */}
+                    {connection.status && connection.status !== "offline" && (
+                      <div
+                        className={`absolute w-5 h-5 rounded-full border-2 border-white dark:border-gray-900 ${
+                          connection.status === "online-game"
+                            ? "bg-green-500"
+                            : connection.status === "online"
+                              ? "bg-blue-500"
+                              : connection.status === "studio"
+                                ? "bg-orange-500"
+                                : "bg-gray-400"
+                        }`}
+                        style={{ bottom: "-2.5px", right: "-2.5px" }}
+                      />
+                    )}
                   </div>
-                </div>
-                
-                <div className="p-3">
-                  <h3 className="font-semibold text-gray-900 text-sm mb-1 truncate">
-                    {game.title}
-                  </h3>
-                  <div className="flex items-center gap-1 text-xs text-gray-600">
-                    <span className="text-green-600">👍</span>
-                    <span>{game.rating}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+                  <p className="text-xs font-semibold text-gray-900 dark:text-gray-100">
+                    {connection.name}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </section>
 
-        {/* Sponsored Section */}
-        <section className="mb-12">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Sponsored</h2>
-            <Link href="/sponsored" className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 font-semibold">
-              See All
-              <ChevronRight className="w-4 h-4" />
-            </Link>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {games.slice(0, 5).map((game) => (
-              <div key={`sponsored-${game.id}`} className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
-                <div className="aspect-video bg-gray-200 dark:bg-gray-700 flex items-center justify-center relative group">
-                  <div className="text-gray-400 dark:text-gray-500 text-sm">Game Thumbnail</div>
-                  
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2 rounded">
-                      PLAY
-                    </button>
-                  </div>
-                </div>
-                
-                <div className="p-3">
-                  <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-sm mb-1 truncate">
-                    {game.title}
-                  </h3>
-                  <div className="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-400">
-                    <span className="text-green-600 dark:text-green-500">👍</span>
-                    <span>{game.rating}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+          {/* Recommended For You Section */}
+          <section className="mb-12">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+              Recommended For You
+            </h2>
 
-        {/* Recommended For You Section (2nd) */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Recommended For You</h2>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {games.map((game) => (
-              <div key={`recommended2-${game.id}`} className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
-                <div className="aspect-video bg-gray-200 dark:bg-gray-700 flex items-center justify-center relative group">
-                  <div className="text-gray-400 dark:text-gray-500 text-sm">Game Thumbnail</div>
-                  
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2 rounded">
-                      PLAY
-                    </button>
-                  </div>
-                </div>
-                
-                <div className="p-3">
-                  <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-sm mb-1 truncate">
-                    {game.title}
-                  </h3>
-                  <div className="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-400">
-                    <span className="text-green-600 dark:text-green-500">👍</span>
-                    <span>{game.rating}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {games.map((game) => (
+                <div
+                  key={game.id}
+                  className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                >
+                  {/* Game Thumbnail Placeholder */}
+                  <div className="aspect-video bg-gray-200 dark:bg-gray-700 flex items-center justify-center relative group">
+                    <div className="text-gray-400 dark:text-gray-500 text-sm">
+                      Game Thumbnail
+                    </div>
 
-        {/* Favorites Section */}
-        <section className="mb-12">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Favorites</h2>
-            <Link href="/favorites" className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 font-semibold">
-              See All
-              <ChevronRight className="w-4 h-4" />
-            </Link>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {games.slice(0, 4).map((game) => (
-              <div key={`favorites-${game.id}`} className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
-                <div className="aspect-video bg-gray-200 dark:bg-gray-700 flex items-center justify-center relative group">
-                  <div className="text-gray-400 dark:text-gray-500 text-sm">Game Thumbnail</div>
-                  
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2 rounded">
-                      PLAY
-                    </button>
+                    {/* Play Button Overlay */}
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2 rounded">
+                        PLAY
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Game Info */}
+                  <div className="p-3">
+                    <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-sm mb-1 truncate">
+                      {game.title}
+                    </h3>
+                    <div className="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-400">
+                      <span className="text-green-600 dark:text-green-500">
+                        👍
+                      </span>
+                      <span>{game.rating}</span>
+                    </div>
                   </div>
                 </div>
-                
-                <div className="p-3">
-                  <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-sm mb-1 truncate">
-                    {game.title}
-                  </h3>
-                  <div className="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-400">
-                    <span className="text-green-600 dark:text-green-500">👍</span>
-                    <span>{game.rating}</span>
+              ))}
+            </div>
+          </section>
+
+          {/* Continue Playing Section */}
+          <section className="mb-12">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                Continue
+              </h2>
+              <Link
+                href="/continue"
+                className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 font-semibold"
+              >
+                See All
+                <ChevronRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {games.slice(0, 4).map((game) => (
+                <div
+                  key={`continue-${game.id}`}
+                  className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                >
+                  <div className="aspect-video bg-gray-200 dark:bg-gray-700 flex items-center justify-center relative group">
+                    <div className="text-gray-400 dark:text-gray-500 text-sm">
+                      Game Thumbnail
+                    </div>
+
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2 rounded">
+                        PLAY
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="p-3">
+                    <h3 className="font-semibold text-gray-900 text-sm mb-1 truncate">
+                      {game.title}
+                    </h3>
+                    <div className="flex items-center gap-1 text-xs text-gray-600">
+                      <span className="text-green-600">👍</span>
+                      <span>{game.rating}</span>
+                    </div>
                   </div>
                 </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Sponsored Section */}
+          <section className="mb-12">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                Sponsored
+              </h2>
+              <Link
+                href="/sponsored"
+                className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 font-semibold"
+              >
+                See All
+                <ChevronRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+              {games.slice(0, 5).map((game) => (
+                <div
+                  key={`sponsored-${game.id}`}
+                  className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                >
+                  <div className="aspect-video bg-gray-200 dark:bg-gray-700 flex items-center justify-center relative group">
+                    <div className="text-gray-400 dark:text-gray-500 text-sm">
+                      Game Thumbnail
+                    </div>
+
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2 rounded">
+                        PLAY
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="p-3">
+                    <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-sm mb-1 truncate">
+                      {game.title}
+                    </h3>
+                    <div className="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-400">
+                      <span className="text-green-600 dark:text-green-500">
+                        👍
+                      </span>
+                      <span>{game.rating}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Recommended For You Section (2nd) */}
+          <section className="mb-12">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+              Recommended For You
+            </h2>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {games.map((game) => (
+                <div
+                  key={`recommended2-${game.id}`}
+                  className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                >
+                  <div className="aspect-video bg-gray-200 dark:bg-gray-700 flex items-center justify-center relative group">
+                    <div className="text-gray-400 dark:text-gray-500 text-sm">
+                      Game Thumbnail
+                    </div>
+
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2 rounded">
+                        PLAY
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="p-3">
+                    <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-sm mb-1 truncate">
+                      {game.title}
+                    </h3>
+                    <div className="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-400">
+                      <span className="text-green-600 dark:text-green-500">
+                        👍
+                      </span>
+                      <span>{game.rating}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Favorites Section */}
+          <section className="mb-12">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                Favorites
+              </h2>
+              <Link
+                href="/favorites"
+                className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 font-semibold"
+              >
+                See All
+                <ChevronRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {games.slice(0, 4).map((game) => (
+                <div
+                  key={`favorites-${game.id}`}
+                  className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                >
+                  <div className="aspect-video bg-gray-200 dark:bg-gray-700 flex items-center justify-center relative group">
+                    <div className="text-gray-400 dark:text-gray-500 text-sm">
+                      Game Thumbnail
+                    </div>
+
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2 rounded">
+                        PLAY
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="p-3">
+                    <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-sm mb-1 truncate">
+                      {game.title}
+                    </h3>
+                    <div className="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-400">
+                      <span className="text-green-600 dark:text-green-500">
+                        👍
+                      </span>
+                      <span>{game.rating}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        </main>
+
+        {/* Right Skyscraper Ad */}
+        {showRightAd && (
+          <div className="hidden xl:block flex-shrink-0">
+            <div className="relative w-[160px]">
+              <button
+                onClick={() => setShowRightAd(false)}
+                className="absolute top-2 right-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 text-2xl font-bold leading-none z-10"
+                aria-label="Close ad"
+              >
+                ×
+              </button>
+              <div className="w-[160px] h-[600px] bg-gray-200 dark:bg-gray-700 rounded flex flex-col items-center justify-center text-gray-500 dark:text-gray-400 text-sm font-medium border border-gray-300 dark:border-gray-600">
+                <span className="text-center px-2">Advertisement</span>
+                <span className="text-center px-2 mt-2 text-xs">
+                  (160 x 600)
+                </span>
               </div>
-            ))}
+              <div className="mt-1 text-center">
+                <span className="text-xs text-gray-500 dark:text-gray-400 uppercase">
+                  Advertisement
+                </span>
+              </div>
+            </div>
           </div>
-        </section>
-      </main>
+        )}
+      </div>
 
       {/* Footer */}
       <Footer />
@@ -273,4 +453,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
